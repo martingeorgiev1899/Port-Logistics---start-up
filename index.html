@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PortAI - B2B AI SaaS за Пристанищна Логистика | Варна & Бургас</title>
+  
+  <!-- Font and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #070c18;
+      --bg-card: #0d1527;
+      --bg-card-hover: #131f38;
+      --border-color: #1e2c4f;
+      --border-focus: #3b82f6;
+      --accent-blue: #2563eb;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+      --glow-blue: rgba(37, 99, 235, 0.25);
+      --glow-cyan: rgba(6, 182, 212, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2c4f;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 12, 24, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.5px;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+    }
+    .logo span {
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #38bdf8;
+    }
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #3b82f6;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 6rem 0 5rem;
+      overflow: hidden;
+      text-align: center;
+    }
+    .hero-glow {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(6, 182, 212, 0.08) 40%, transparent 70%);
+      filter: blur(60px);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #60a5fa;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: 3.25rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+    }
+    .hero h1 span.gradient {
+      background: linear-gradient(135deg, #60a5fa 0%, #38bdf8 50%, #2dd4bf 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 780px;
+      margin: 0 auto 2.5rem;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+    .hero-cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Badges Bar */
+    .hero-stats {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      text-align: left;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: #3b82f6;
+    }
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      background: rgba(37, 99, 235, 0.15);
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+    }
+    .stat-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .stat-lbl {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3.5rem;
+    }
+    .section-pill {
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* Problem vs Solution */
+    .problem-solution-section {
+      padding: 5rem 0;
+    }
+    .pv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .pv-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2.25rem;
+      border: 1px solid var(--border-color);
+    }
+    .pv-card.problem {
+      border-top: 4px solid var(--accent-rose);
+    }
+    .pv-card.solution {
+      border-top: 4px solid var(--accent-emerald);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.05);
+    }
+    .pv-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .pv-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .pv-item {
+      display: flex;
+      gap: 1rem;
+    }
+    .pv-icon-wrap {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+    .pv-card.problem .pv-icon-wrap {
+      background: rgba(244, 63, 94, 0.15);
+      color: #f43f5e;
+    }
+    .pv-card.solution .pv-icon-wrap {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+    .pv-text h4 {
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .pv-text p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Interactive Pipeline Demo Playground */
+    .demo-section {
+      padding: 5rem 0;
+      background: linear-gradient(180deg, rgba(7, 12, 24, 0) 0%, #0b1222 100%);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .pipeline-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .pipe-step-card {
+      background: #09101f;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .pipe-step-card.active {
+      border-color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.08);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+    .step-number {
+      width: 28px;
+      height: 28px;
+      background: #1e2c4f;
+      color: #94a3b8;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .pipe-step-card.active .step-number {
+      background: var(--accent-cyan);
+      color: #000;
+    }
+    .step-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .step-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Live Interactive Demo Box */
+    .interactive-board {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.5rem;
+      background: #080d1a;
+      border: 1px solid #1a2744;
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+    .doc-preview-pane {
+      background: #0f172a;
+      border: 1px dashed #334155;
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #1e293b;
+    }
+    .doc-badge {
+      font-size: 0.75rem;
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .sample-doc-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: #030712;
+      color: #94a3b8;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      line-height: 1.5;
+      height: 250px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .sample-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .sample-btn {
+      flex: 1;
+      font-size: 0.78rem;
+      padding: 0.45rem;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sample-btn:hover, .sample-btn.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    .output-pane {
+      display: flex;
+      flex-direction: column;
+    }
+    .output-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .out-tab {
+      background: transparent;
+      border: 1px solid #1e293b;
+      color: #94a3b8;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .out-tab.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border-color: #38bdf8;
+    }
+    .output-content {
+      flex: 1;
+      background: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      height: 250px;
+      overflow-y: auto;
+      color: #10b981;
+    }
+    .action-trigger-bar {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .validation-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+    .validation-status-pill.error {
+      background: rgba(244, 63, 94, 0.1);
+      color: #f43f5e;
+      border-color: rgba(244, 63, 94, 0.25);
+    }
+
+    /* Architecture Section */
+    .arch-section {
+      padding: 5rem 0;
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .arch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: all 0.2s;
+    }
+    .arch-card:hover {
+      border-color: #3b82f6;
+      transform: translateY(-4px);
+    }
+    .arch-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
+      display: inline-block;
+    }
+    .arch-card h4 {
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    .arch-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Lean Canvas Section */
+    .canvas-section {
+      padding: 5rem 0;
+      background: #090f1f;
+      border-top: 1px solid var(--border-color);
+    }
+    .canvas-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+    .canvas-cell {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-size: 0.88rem;
+    }
+    .canvas-cell h4 {
+      font-size: 0.95rem;
+      color: #60a5fa;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 0.4rem;
+    }
+    .canvas-cell ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: #cbd5e1;
+    }
+    .canvas-cell ul li {
+      position: relative;
+      padding-left: 1.1rem;
+      line-height: 1.45;
+    }
+    .canvas-cell ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: bold;
+    }
+    .col-span-2 {
+      grid-column: span 2;
+    }
+    .col-span-3 {
+      grid-column: span 3;
+    }
+
+    /* Roadmap Section */
+    .roadmap-section {
+      padding: 5rem 0;
+    }
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 24px;
+      width: 2px;
+      background: var(--border-color);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      padding-left: 65px;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 14px;
+      top: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 3px solid #3b82f6;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    .timeline-item.active .timeline-dot {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      box-shadow: 0 0 15px #38bdf8;
+    }
+    .timeline-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+    }
+    .timeline-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #38bdf8;
+      letter-spacing: 1px;
+      margin-bottom: 0.25rem;
+    }
+    .timeline-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .timeline-tasks {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .t-task {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Team Section */
+    .team-section {
+      padding: 5rem 0;
+      background: #080d1c;
+      border-top: 1px solid var(--border-color);
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .team-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #06b6d4);
+    }
+    .team-role {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.25rem;
+    }
+    .team-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .team-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .responsibility-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+    .responsibility-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .responsibility-list li i {
+      color: #10b981;
+      margin-top: 0.25rem;
+    }
+
+    /* Incubators & Funding Section */
+    .funding-banner {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(6, 182, 212, 0.15));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .funding-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .funding-content p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      max-width: 650px;
+    }
+    .incubator-badges {
+      display: flex;
+      gap: 1rem;
+    }
+    .inc-badge {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .inc-badge span {
+      display: block;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .inc-badge strong {
+      font-size: 0.95rem;
+      color: #38bdf8;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 0;
+      background: #040812;
+      color: var(--text-sub);
+      font-size: 0.88rem;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Modal / Popups */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .canvas-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .col-span-2, .col-span-3 {
+        grid-column: span 2;
+      }
+      .arch-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .pv-grid, .team-grid, .interactive-board {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-steps {
+        grid-template-columns: 1fr 1fr;
+      }
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+      nav ul {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <div class="logo-badge">
+          <i class="fa-solid fa-anchor text-white"></i>
+        </div>
+        <div>Port<span>AI</span> <small style="font-size:0.65rem; color:#64748b; font-weight:500; display:block; line-height:1;">Varna SaaS</small></div>
+      </a>
+
+      <nav>
+        <ul>
+          <li><a href="#problem">Проблем & Решение</a></li>
+          <li><a href="#pipeline">Интерактивно Демо</a></li>
+          <li><a href="#architecture">Архитектура</a></li>
+          <li><a href="#canvas">Lean Canvas</a></li>
+          <li><a href="#roadmap">Пътна карта</a></li>
+          <li><a href="#team">Екип</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline" onclick="openMasterDocModal()">
+          <i class="fa-solid fa-file-lines"></i> Документ
+        </button>
+        <a href="#pipeline" class="btn btn-primary">
+          <i class="fa-solid fa-bolt"></i> Тествай AI
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-pill">
+        <i class="fa-solid fa-ship"></i> B2B AI SaaS за Пристанищна Логистика • гр. Варна
+      </div>
+      
+      <h1>
+        Автоматизация на Морския Документооборот <br>
+        чрез <span class="gradient">Интелигентни AI Агенти</span>
+      </h1>
+      
+      <p>
+        Спестете часове ръчно преписване на данни и елиминирайте скъпоструващите грешки при обработка на товарителници (CMR), коносаменти (Bill of Lading) и митнически декларации. Проектирано за пристанищната екосистема на Варна и Бургас.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#pipeline" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+          <i class="fa-solid fa-play"></i> Вижте Демо на Процеса
+        </a>
+        <a href="#canvas" class="btn btn-outline" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+          <i class="fa-solid fa-chart-pie"></i> Разгледай Lean Canvas
+        </a>
+      </div>
+
+      <!-- Quick Stats / Highlights -->
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+          <div>
+            <div class="stat-val">2+ часа</div>
+            <div class="stat-lbl">Спестени на служител дневно</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#10b981; background:rgba(16,185,129,0.15);"><i class="fa-solid fa-bullseye"></i></div>
+          <div>
+            <div class="stat-val">99.4%</div>
+            <div class="stat-lbl">Точност на валидацията</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#06b6d4; background:rgba(6,182,212,0.15);"><i class="fa-solid fa-network-wired"></i></div>
+          <div>
+            <div class="stat-val">0 софтуерни смени</div>
+            <div class="stat-lbl">Директен експорт към всяко ERP</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#f59e0b; background:rgba(245,158,11,0.15);"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <div class="stat-val">Варна & Бургас</div>
+            <div class="stat-lbl">Директно локално присъствие</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem vs Solution Section -->
+  <section id="problem" class="problem-solution-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-pill">Проблем & Решение</span>
+        <h2 class="section-title">Защо морската логистика се нуждае от трансформация</h2>
+        <p class="section-desc">Докато търговията става все по-бърза, обработката на пристанищната документация остава консервативна и бавна.</p>
+      </div>
+
+      <div class="pv-grid">
+        <!-- Problem Card -->
+        <div class="pv-card problem">
+          <h3><i class="fa-solid fa-triangle-exclamation" style="color:#f43f5e;"></i> Идентифицирани проблеми на пазара</h3>
+          <ul class="pv-list">
+            <li class="pv-item">
+              <div class="pv-icon-wrap"><i class="fa-solid fa-xmark"></i></div>
+              <div class="pv-text">
+                <h4>Тежък и бавен ръчен документооборот</h4>
+                <p>Ежедневна обработка на стотици неструктурирани сканирани копия и PDF файлове – товарителници, коносаменти (Bills of Lading), митнически бланки и сертификати.</p>
+              </div>
+            </li>
+            <li class="pv-item">
+              <div class="pv-icon-wrap"><i class="fa-solid fa-xmark"></i></div>
+              <div class="pv-text">
+                <h4>Висок процент скъпоструващи човешки грешки</h4>
+                <p>Преписването на тегла, номера на контейнери или тарифни кодове води до тежки забавяния на пристанищните терминали, глоби от митници и престой на кораби.</p>
+              </div>
+            </li>
+            <li class="pv-item">
+              <div class="pv-icon-wrap"><i class="fa-solid fa-xmark"></i></div>
+              <div class="pv-text">
+                <h4>Остарели софтуери и изолирани системи</h4>
+                <p>Съществуващите логистични софтуери не комуникират помежду си и изискват скъп персонал за извършване на механичен copy-paste труд.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Solution Card -->
+        <div class="pv-card solution">
+          <h3><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Нашето решение: PortAI Engine</h3>
+          <ul class="pv-list">
+            <li class="pv-item">
+              <div class="pv-icon-wrap"><i class="fa-solid fa-check"></i></div>
+              <div class="pv-text">
+                <h4>Автоматично OCR + LLM четене на документи</h4>
+                <p>Качвате PDF или снимка на документа – нашият AI пайплайн разчита контекста и мигновено извлича данните в кристално структуриран JSON формат.</p>
+              </div>
+            </li>
+            <li class="pv-item">
+              <div class="pv-icon-wrap"><i class="fa-solid fa-check"></i></div>
+              <div class="pv-text">
+                <h4>Интелигентна крос-валидация чрез AI Агенти</h4>
+                <p>Автоматична проверка за логически несъответствия: съвпадат ли сумите на контейнерите, общото тегло (Бруто/Нето) и кодовете по ТАРИК преди предаване на митница.</p>
+              </div>
+            </li>
+            <li class="pv-item">
+              <div class="pv-icon-wrap"><i class="fa-solid fa-check"></i></div>
+              <div class="pv-text">
+                <h4>Безпроблемна интеграция (Excel, CSV или API)</h4>
+                <p>Спедиторите не сменят навиците си: получават готов файл за 1 секунда или директно автоматично наливане в тяхната ERP система.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Pipeline Playground -->
+  <section id="pipeline" class="demo-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-pill">Интерактивно Демо</span>
+        <h2 class="section-title">Вижте как AI Агентите обработват документ</h2>
+        <p class="section-desc">Изберете примерен логистичен документ и стартирайте симулацията на живо.</p>
+      </div>
+
+      <div class="pipeline-wrapper">
+        <!-- 4 Step Flow Bar -->
+        <div class="pipeline-steps">
+          <div class="pipe-step-card" id="stepCard1">
+            <div class="step-number">1</div>
+            <div class="step-title">Вход & Качване</div>
+            <div class="step-desc">Сканиран PDF / Коносамент</div>
+          </div>
+          <div class="pipe-step-card" id="stepCard2">
+            <div class="step-number">2</div>
+            <div class="step-title">OCR & LLM Екстракция</div>
+            <div class="step-desc">Разпознаване на контекст</div>
+          </div>
+          <div class="pipe-step-card" id="stepCard3">
+            <div class="step-number">3</div>
+            <div class="step-title">AI Крос-валидация</div>
+            <div class="step-desc">Засичане на грешки</div>
+          </div>
+          <div class="pipe-step-card" id="stepCard4">
+            <div class="step-number">4</div>
+            <div class="step-title">Готов Експорт</div>
+            <div class="step-desc">ERP / CSV / JSON</div>
+          </div>
+        </div>
+
+        <!-- Interactive Board -->
+        <div class="interactive-board">
+          <!-- Input Document -->
+          <div class="doc-preview-pane">
+            <div class="doc-header">
+              <span class="doc-badge"><i class="fa-solid fa-file-pdf"></i> ВХОДЯЩ ДОКУМЕНТ</span>
+              <span style="font-size:0.75rem; color:#64748b;" id="docFilename">bill_of_lading_varna_042.pdf</span>
+            </div>
+            
+            <div class="sample-doc-box" id="docRawViewer">... зареждане на документ ...</div>
+
+            <div class="sample-buttons">
+              <button class="sample-btn active" onclick="loadSampleDoc('bl_ok')">
+                <i class="fa-solid fa-check"></i> Коносамент (Изправен)
+              </button>
+              <button class="sample-btn" onclick="loadSampleDoc('bl_err')">
+                <i class="fa-solid fa-triangle-exclamation"></i> С грешка в теглото
+              </button>
+              <button class="sample-btn" onclick="loadSampleDoc('cmr')">
+                <i class="fa-solid fa-truck"></i> Товарителница CMR
+              </button>
+            </div>
+          </div>
+
+          <!-- Output Inspector -->
+          <div class="output-pane">
+            <div class="output-tabs">
+              <button class="out-tab active" id="tabJson" onclick="switchTab('json')">JSON Структура</button>
+              <button class="out-tab" id="tabValidation" onclick="switchTab('validation')">Резултат от Валидацията</button>
+              <button class="out-tab" id="tabErp" onclick="switchTab('erp')">ERP Изглед</button>
+            </div>
+
+            <div class="output-content" id="outputConsole">
+              Натиснете бутона "Стартирай AI Анализ", за да видите обработката...
+            </div>
+
+            <div class="action-trigger-bar">
+              <div id="validationPill" class="validation-status-pill">
+                <i class="fa-solid fa-circle-notch fa-spin"></i> Готов за анализ
+              </div>
+
+              <button class="btn btn-primary" id="runDemoBtn" onclick="runAiSimulation()">
+                <i class="fa-solid fa-bolt"></i> Стартирай AI Анализ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Architecture -->
+  <section id="architecture" class="arch-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-pill">Техническа Архитектура</span>
+        <h2 class="section-title">Проектирана за Мащаб, Сигурност и Ниска Себестойност</h2>
+        <p class="section-desc">Разделение на Backend/AI ядро и Frontend/Integration слой с фокус върху икономичност на токените.</p>
+      </div>
+
+      <div class="arch-grid">
+        <div class="arch-card">
+          <div class="arch-icon" style="color:#60a5fa;"><i class="fa-solid fa-brain"></i></div>
+          <h4>AI Пайплайн & Оптимизация</h4>
+          <p>
+            Комбинация от OCR за некачествени сканирания и рентабилни LLM модели за структуриране. Използват се специализирани системни промптове с фиксирани JSON схеми за минимизиране на разходите за токени на всяка страница.
+          </p>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-icon" style="color:#10b981;"><i class="fa-solid fa-shield-halved"></i></div>
+          <h4>Интелигентни Валидационни Агенти</h4>
+          <p>
+            Автоматизирани алгоритмични правила правят семантична проверка: сумиране на колетите, валидиране на ISO кодовете на контейнерите, проверка на митнически номенклатури и сигнализиране при съмнения за грешка.
+          </p>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-icon" style="color:#06b6d4;"><i class="fa-solid fa-cloud"></i></div>
+          <h4>Multi-Tenant Cloud & GDPR</h4>
+          <p>
+            Сигурна облачна база данни с криптиране на данните в покой и при трансфер. Пълно спазване на GDPR и конфиденциалност на търговските данни между отделните спедиторски фирми.
+          </p>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-icon" style="color:#f59e0b;"><i class="fa-solid fa-table-cells"></i></div>
+          <h4>Двупосочен Експорт</h4>
+          <p>
+            Консервативните клиенти разчитат на незабавен експорт към стандартизирани Excel/CSV таблици, докато дигитализираните спедитори се свързват чрез RESTful API уебхукове.
+          </p>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-icon" style="color:#a855f7;"><i class="fa-solid fa-chart-line"></i></div>
+          <h4>Real-Time Monitoring & Logs</h4>
+          <p>
+            Централизирано следене на сървърните логове в реално време, позволяващо незабавно изолиране на аномалии при нестандартни документи и фино настройване на моделите.
+          </p>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-icon" style="color:#f43f5e;"><i class="fa-solid fa-bullseye"></i></div>
+          <h4>Лазерен Обхват на MVP</h4>
+          <p>
+            Фокус върху <strong>един конкретен критичен документ</strong> (коносамент или товарителница), за да се докаже спестеното време за 30 дни, вместо тромав опит да се дигитализира цялото пристанище наведнъж.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lean Canvas Interactive Section -->
+  <section id="canvas" class="canvas-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-pill">Бизнес Модел</span>
+        <h2 class="section-title">Lean Canvas на Стартъпа</h2>
+        <p class="section-desc">Официалната структура на бизнес модела, заложена в Master Document за кандидатстване пред инкубатори.</p>
+      </div>
+
+      <div class="canvas-grid">
+        <!-- 1. Problem -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. Проблем</h4>
+          <ul>
+            <li>Бавен и тромав ръчен документооборот.</li>
+            <li>Скъпоструващи човешки грешки при въвеждане.</li>
+            <li>Остарели софтуери без автоматична връзка.</li>
+          </ul>
+        </div>
+
+        <!-- 2. Solution -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-lightbulb"></i> 2. Решение</h4>
+          <ul>
+            <li>AI агенти с OCR & LLM за четене на документи.</li>
+            <li>Автоматизирана крос-валидация на данни.</li>
+            <li>Модул за експорт към Excel, CSV и външно ERP.</li>
+          </ul>
+        </div>
+
+        <!-- 3. UVP -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-gem"></i> 3. Уникално Предложение (UVP)</h4>
+          <ul>
+            <li>Спестяване на 2+ часа ръчен труд на служител дневно.</li>
+            <li>Нула грешки при предаване към митница.</li>
+            <li>Без смяна на текущия софтуер на фирмата.</li>
+          </ul>
+        </div>
+
+        <!-- 4. Unfair Advantage -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-trophy"></i> 4. Нечестно Предимство</h4>
+          <ul>
+            <li>Локално присъствие на място във Варна.</li>
+            <li>In-house инженерен екип (Solutions Architecture).</li>
+            <li>Личен достъп до местната морска екосистема.</li>
+          </ul>
+        </div>
+
+        <!-- 5. Customer Segments -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-users"></i> 5. Клиентски Сегменти</h4>
+          <ul>
+            <li>Спедиторски компании и митнически агенти.</li>
+            <li>Корабни агенти и терминални оператори.</li>
+            <li><strong>Early Adopters:</strong> 5-10 местни спедитори във Варна.</li>
+          </ul>
+        </div>
+
+        <!-- 6. Key Metrics -->
+        <div class="canvas-cell col-span-2">
+          <h4><i class="fa-solid fa-chart-simple"></i> 6. Ключови Метрики (Metrics)</h4>
+          <ul>
+            <li><strong>Спестено време:</strong> Реално измерени часове спестен труд на служител на ден.</li>
+            <li><strong>Точност:</strong> Процент успешно обработени документи без човешка намеса (>98%).</li>
+            <li><strong>Конверсия:</strong> Процент преминаване от безплатен тест към платен абонамент.</li>
+          </ul>
+        </div>
+
+        <!-- 7. Channels -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-bullhorn"></i> 7. Канали</h4>
+          <ul>
+            <li>Директни срещи на място във Варна & Бургас.</li>
+            <li>Партньорства с РАПИВ и Бизнес инкубатор.</li>
+            <li>Доказани Case Studies от пилотните клиенти.</li>
+          </ul>
+        </div>
+
+        <!-- 8. Cost Structure -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-money-bill-trend-up"></i> 8. Разходи</h4>
+          <ul>
+            <li>Облачен хостинг и бази данни.</li>
+            <li>API заявки за LLM/OCR (оптимизирани).</li>
+            <li>Юридически и GDPR такси за учредяване.</li>
+          </ul>
+        </div>
+
+        <!-- 9. Revenue Streams -->
+        <div class="canvas-cell">
+          <h4><i class="fa-solid fa-sack-dollar"></i> 9. Приходи</h4>
+          <ul>
+            <li>B2B SaaS месечен абонамент (Recurring).</li>
+            <li>Ценови пакети според обработен обем документи.</li>
+            <li>Премиум API интеграция за големи оператори.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6-Month Roadmap -->
+  <section id="roadmap" class="roadmap-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-pill">План за действие</span>
+        <h2 class="section-title">6-Месечна Пътна Карта до v1.0</h2>
+        <p class="section-desc">Последователни фази от валидиране на проблема до първи плащащи клиенти и инвестиция.</p>
+      </div>
+
+      <div class="timeline">
+        <!-- Week 1 -->
+        <div class="timeline-item active">
+          <div class="timeline-dot"></div>
+          <div class="timeline-box">
+            <div class="timeline-tag">Седмица 1 • Текуща фаза</div>
+            <div class="timeline-title">Официално стартиране & Разпределение на ролите</div>
+            <div class="timeline-desc">Среща на съоснователите, приемане на Master Document, структуриране на общо Linear/GitHub работно пространство.</div>
+            <div class="timeline-tasks">
+              <div class="t-task"><i class="fa-regular fa-circle-check text-emerald-400"></i> Разпределяне на Партньор А и Партньор Б</div>
+              <div class="t-task"><i class="fa-regular fa-circle-check text-emerald-400"></i> Финализиране на Lean Canvas рамката</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Month 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-box">
+            <div class="timeline-tag">Месец 1 • Фаза 1</div>
+            <div class="timeline-title">Валидиране на проблема & Домейн Анализ</div>
+            <div class="timeline-desc">Провеждане на проблемни интервюта с 5–10 спедиторски фирми във Варна. Събиране на реални бланки с анонимизирани данни.</div>
+            <div class="timeline-tasks">
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Фиксиране на един критичен документ за фокус на MVP</div>
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Тестване на OCR/LLM модели за най-ниска цена на токен</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Month 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-box">
+            <div class="timeline-tag">Месец 2 • Фаза 2</div>
+            <div class="timeline-title">Proof of Concept & Кандидатстване за Финансиране</div>
+            <div class="timeline-desc">Изграждане на работещ скриптов пайплайн (JSON екстракция) и визуален прототип на таблото за управление.</div>
+            <div class="timeline-tasks">
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Изготвяне на Pitch Deck и финансови прогнози</div>
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Подаване на документи пред РАПИВ и Бизнес инкубатор – Варна</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Months 3-4 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-box">
+            <div class="timeline-tag">Месеци 3 – 4 • Фаза 3</div>
+            <div class="timeline-title">Разработка на MVP</div>
+            <div class="timeline-desc">Програмиране на пълната бекенд логика на AI агентите за автоматична крос-валидация и потребителски уеб Dashboard.</div>
+            <div class="timeline-tasks">
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Засичане на несъответствия в реално време</div>
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Модул за експорт към Excel, CSV и ERP API връзка</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Months 5-6+ -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-box">
+            <div class="timeline-tag">Месеци 5 – 6+ • Фаза 4 & 5</div>
+            <div class="timeline-title">Пилотен Бета Тест & Излизане на пазара v1.0</div>
+            <div class="timeline-desc">1-месечен безплатен пилотен тест при 1–2 спедитора във Варна, измерване на спестените часове и стартиране на платени абонаменти.</div>
+            <div class="timeline-tasks">
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Изготвяне на доказано Case Study за продажби</div>
+              <div class="t-task"><i class="fa-regular fa-circle"></i> Разширяване към пристанище Бургас и затваряне на Seed инвестиция</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Funding Highlights -->
+      <div class="funding-banner">
+        <div class="funding-content">
+          <h3><i class="fa-solid fa-landmark"></i> Целеви Инкубатори & Финансиране</h3>
+          <p>
+            Проектът се позиционира за кандидатстване за pre-seed/seed подкрепа пред местните иновационни структури в региона.
+          </p>
+        </div>
+        <div class="incubator-badges">
+          <div class="inc-badge">
+            <span>Регионална Агенция</span>
+            <strong>РАПИВ Варна</strong>
+          </div>
+          <div class="inc-badge">
+            <span>Стартъп Хъб</span>
+            <strong>Бизнес Инкубатор Варна</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team & Roles Section -->
+  <section id="team" class="team-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-pill">Екип & Управление</span>
+        <h2 class="section-title">Разпределение на Ролите на Съоснователите</h2>
+        <p class="section-desc">Балансиран инженерен тандем, осигуряващ 100% вътрешна разработка без разходи за външни агенции.</p>
+      </div>
+
+      <div class="team-grid">
+        <!-- Partner A -->
+        <div class="team-card">
+          <div class="team-role">Партньор А</div>
+          <div class="team-name">Вътрешен Архитект</div>
+          <p class="team-desc">Фокус: Системи, Бекенд, AI Ядро, База Данни & Инфраструктура.</p>
+          <ul class="responsibility-list">
+            <li><i class="fa-solid fa-check"></i> Изграждане на OCR & LLM конвейера и избор на модели.</li>
+            <li><i class="fa-solid fa-check"></i> Логика на AI агентите за крос-валидация на данни.</li>
+            <li><i class="fa-solid fa-check"></i> Облачна база данни, логове за грешки и сигурност/GDPR.</li>
+            <li><i class="fa-solid fa-check"></i> Оптимизация на себестойността на API заявките.</li>
+          </ul>
+        </div>
+
+        <!-- Partner B -->
+        <div class="team-card">
+          <div class="team-role">Партньор Б</div>
+          <div class="team-name">Външен Интегратор</div>
+          <p class="team-desc">Фокус: Продукт, Dashboard, B2B Интервюта, Продажби & Финансиране.</p>
+          <ul class="responsibility-list">
+            <li><i class="fa-solid fa-check"></i> Потребителски уеб Dashboard и експортни модули (Excel/CSV/API).</li>
+            <li><i class="fa-solid fa-check"></i> Провеждане на проблемните интервюта със спедитори във Варна.</li>
+            <li><i class="fa-solid fa-check"></i> Изготвяне на Pitch Deck и кандидатстване пред РАПИВ/Инкубатора.</li>
+            <li><i class="fa-solid fa-check"></i> Управление на пилотните тестове и обратната връзка от клиенти.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <div class="logo-badge" style="width:28px; height:28px; font-size:0.75rem;">
+            <i class="fa-solid fa-anchor text-white"></i>
+          </div>
+          <span style="font-weight:700; color:#fff;">PortAI Technologies</span>
+          <span>© Октомври 2026 • гр. Варна, България</span>
+        </div>
+
+        <div style="display:flex; gap:1.5rem;">
+          <a href="#" style="color:#64748b; text-decoration:none;" onclick="openMasterDocModal()">Master Knowledge Base</a>
+          <a href="#pipeline" style="color:#64748b; text-decoration:none;">Демо Система</a>
+          <a href="#canvas" style="color:#64748b; text-decoration:none;">Lean Canvas</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Master Document Viewer Modal -->
+  <div id="masterDocModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="color:#fff; font-size:1.2rem; display:flex; align-items:center; gap:0.5rem;">
+          <i class="fa-solid fa-book-bookmark text-blue-500"></i> Master Document Summary
+        </h3>
+        <button class="modal-close" onclick="closeMasterDocModal()">&times;</button>
+      </div>
+      <div style="font-size:0.88rem; color:#cbd5e1; max-height:400px; overflow-y:auto; line-height:1.6; display:flex; flex-direction:column; gap:1rem;">
+        <p><strong>Заглавие:</strong> B2B AI SaaS за Пристанищна Логистика и морски документооборот</p>
+        <p><strong>Локация:</strong> гр. Варна, България (с разширяване към Бургас)</p>
+        <p><strong>Статус:</strong> Етап на планиране, Lean Canvas и подготовка за валидиране на проблема (Pre-Seed).</p>
+        <p><strong>Основни секции в документа:</strong></p>
+        <ol style="padding-left:1.2rem; display:flex; flex-direction:column; gap:0.3rem;">
+          <li>1. Резюме на проекта (Executive Summary)</li>
+          <li>2. Проблем и Решение (Problem & Solution)</li>
+          <li>3. Бизнес модел и Lean Canvas</li>
+          <li>4. Техническа архитектура и Продукт</li>
+          <li>5. Пазарна стратегия, Инкубатори и Финансиране</li>
+          <li>6. Екип и Разпределение на Ролите</li>
+          <li>7. Текущ статус, Отворени въпроси и 6-месечна пътна карта</li>
+        </ol>
+        <p style="font-size:0.8rem; color:#64748b;">Пълният документ е зареден директно от Google Drive и е съхранен в локалната директория на проекта.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    // Sample Documents Data
+    const samples = {
+      bl_ok: {
+        filename: "bill_of_lading_maersk_VARNA_OK.pdf",
+        type: "Bill of Lading",
+        raw: `BILL OF LADING FOR OCEAN TRANSPORT
+B/L No: MAEU948201948
+Shipper: VARNA GRAIN EXPORT LTD, Varna Port Area 2, Bulgaria
+Consignee: MEDITERRANEAN AGRO COMMODITIES S.A., Alexandria, Egypt
+Vessel / Voyage: MV BLACK SEA STAR / V.2410
+Port of Loading: PORT OF VARNA (BGVAR), BULGARIA
+Port of Discharge: ALEXANDRIA PORT (EGALX), EGYPT
+
+Container No: MSKU7849102 (40ft High Cube)
+Seal No: BG-VR-90812
+Description of Goods: BULGARIAN WHEAT HARVEST 2026 (IN BULK/BAGS)
+HS / Taric Code: 1001.99.00
+Gross Weight: 26,450.00 KG
+Tare Weight: 3,820.00 KG
+Net Cargo Weight: 22,630.00 KG
+Total Packages: 450 BAGS
+Freight: PREPAID AS AGREED
+Customs Clearance Reference: BG002005-2026-99120`,
+        json: {
+          document_type: "Bill of Lading",
+          document_number: "MAEU948201948",
+          vessel_info: {
+            name: "MV BLACK SEA STAR",
+            voyage: "V.2410",
+            port_of_loading: "PORT OF VARNA (BGVAR)",
+            port_of_discharge: "ALEXANDRIA PORT (EGALX)"
+          },
+          parties: {
+            shipper: "VARNA GRAIN EXPORT LTD",
+            consignee: "MEDITERRANEAN AGRO COMMODITIES S.A."
+          },
+          cargo: {
+            container_id: "MSKU7849102",
+            container_type: "40HC",
+            seal_number: "BG-VR-90812",
+            description: "BULGARIAN WHEAT HARVEST 2026",
+            hs_code: "1001.99.00",
+            packages_count: 450,
+            weights_kg: {
+              gross: 26450.00,
+              tare: 3820.00,
+              net: 22630.00
+            }
+          },
+          customs_ref: "BG002005-2026-99120"
+        },
+        validation: {
+          status: "PASSED",
+          score: "99.8%",
+          checks: [
+            { rule: "ISO 6346 Container Checksum (MSKU7849102)", passed: true, note: "Валиден контролен символ" },
+            { rule: "Математическа проверка: Gross = Tare + Net", passed: true, note: "26,450 kg = 3,820 kg + 22,630 kg (Точно)" },
+            { rule: "Валидация на BG митнически референтен код", passed: true, note: "Формат BG002005 съответства на Митница Варна" },
+            { rule: "HS / Taric класификация", passed: true, note: "1001.99.00 съответства на 'Пшеница'" }
+          ]
+        },
+        erp_format: "ROW_ID,DOC_NO,CONTAINER,GROSS_KG,NET_KG,POL,POD,STATUS\n1,MAEU948201948,MSKU7849102,26450,22630,BGVAR,EGALX,READY_FOR_CUSTOMS"
+      },
+
+      bl_err: {
+        filename: "bill_of_lading_ANOMALY_DETECTED.pdf",
+        type: "Bill of Lading with Discrepancy",
+        raw: `BILL OF LADING FOR OCEAN TRANSPORT
+B/L No: CMA-VR-884920
+Shipper: BLACK SEA FERTILIZERS OOD, Devnya / Varna
+Consignee: ROTTERDAM CHEMICAL LOGISTICS B.V.
+Port of Loading: VARNA WEST TERMINAL (BGVAR)
+Port of Discharge: ROTTERDAM (NLRTM)
+
+Container No: CMAU1234560 (20ft Standard)
+Seal No: SL-88192
+Description of Goods: UREA FERTILIZER GRADE A
+Gross Weight: 28,500.00 KG   <-- ВНИМАНИЕ: Превишение на макс. бруто тегло!
+Tare Weight: 2,200.00 KG
+Net Cargo Weight: 24,000.00 KG <-- НЕСЪОТВЕТСТВИЕ: 28,500 - 2,200 != 24,000 (разлика 2,300 kg)
+Declared Packages: 800 SACKS`,
+        json: {
+          document_type: "Bill of Lading",
+          document_number: "CMA-VR-884920",
+          parties: {
+            shipper: "BLACK SEA FERTILIZERS OOD",
+            consignee: "ROTTERDAM CHEMICAL LOGISTICS B.V."
+          },
+          cargo: {
+            container_id: "CMAU1234560",
+            description: "UREA FERTILIZER GRADE A",
+            weights_kg: {
+              gross: 28500.00,
+              tare: 2200.00,
+              net: 24000.00
+            }
+          }
+        },
+        validation: {
+          status: "FAILED",
+          score: "68.0%",
+          checks: [
+            { rule: "Математическа проверка: Gross = Tare + Net", passed: false, note: "ГРЕШКА: Разлика от 2,300.00 KG между обявеното Бруто и сбор Нето+Тара!" },
+            { rule: "Максимално допустимо бруто тегло за 20ft", passed: false, note: "ПРЕДУПРЕЖДЕНИЕ: Обявени 28,500 KG. Надвишава безопасното тегло за сухопътен превоз!" },
+            { rule: "ISO Контейнерен чексума", passed: true, note: "Номерът CMAU1234560 е структурен" }
+          ]
+        },
+        erp_format: "ГРЕШКА ПРИ ЕКСПОРТ: Документът е блокиран от AI валидатора поради математическо несъответствие в теглата (Разлика: 2,300 kg). Моля, изисквайте коригирана бланка от спедитора."
+      },
+
+      cmr: {
+        filename: "international_cmr_consignment_0091.pdf",
+        type: "CMR Waybill",
+        raw: `INTERNATIONAL CONSIGNMENT NOTE (CMR)
+CMR No: BG-TR-2026-0812
+1. Sender: BULGARIAN LOGISTICS HUB, Varna South Industrial Zone
+2. Consignee: ISTANBUL GLOBAL FREIGHT LTD, Tuzla, Turkey
+16. Carrier: BALKAN TRANS EXPRESS OOD (Truck Reg: B 7781 PB / B 4420 EB)
+19. Special Agreements: Customs clearance at Kapitan Andreevo (BG003000)
+
+Marks and Nos: PALLETS 1-24
+Number of Packages: 24 INDUSTRIAL PALLETS
+Method of Packing: SHRINK-WRAPPED WOODEN PALLETS
+Nature of Goods: AUTOMOTIVE SPARE PARTS FOR LOGISTICS FLEET
+Stat. No: 8708.29.90
+Gross Weight: 14,200.00 KG
+Volume: 65.40 CBM`,
+        json: {
+          document_type: "CMR Waybill",
+          cmr_number: "BG-TR-2026-0812",
+          parties: {
+            sender: "BULGARIAN LOGISTICS HUB (Varna)",
+            consignee: "ISTANBUL GLOBAL FREIGHT LTD",
+            carrier: "BALKAN TRANS EXPRESS OOD"
+          },
+          transport: {
+            truck_registration: "B 7781 PB",
+            trailer_registration: "B 4420 EB",
+            customs_checkpoint: "Kapitan Andreevo (BG003000)"
+          },
+          cargo: {
+            packages: 24,
+            nature: "AUTOMOTIVE SPARE PARTS",
+            hs_code: "8708.29.90",
+            gross_kg: 14200.00,
+            volume_cbm: 65.40
+          }
+        },
+        validation: {
+          status: "PASSED",
+          score: "100%",
+          checks: [
+            { rule: "Валидация на български рег. номер", passed: true, note: "B 7781 PB (гр. Варна) – коректен формат" },
+            { rule: "Митнически пункт за износ", passed: true, note: "BG003000 (Капитан Андреево) – активен за ТИР" },
+            { rule: "Плътност на товара (Обем към Тегло)", passed: true, note: "Нормално съотношение (217 kg/m3)" }
+          ]
+        },
+        erp_format: "ROW_ID,CMR_NO,SENDER,CARRIER,TRUCK,GROSS_KG,CUSTOMS\n1,BG-TR-2026-0812,BULGARIAN LOGISTICS HUB,BALKAN TRANS,B 7781 PB,14200,BG003000"
+      }
+    };
+
+    let currentSampleKey = 'bl_ok';
+    let currentTab = 'json';
+
+    function loadSampleDoc(key) {
+      currentSampleKey = key;
+      const s = samples[key];
+      document.getElementById('docFilename').innerText = s.filename;
+      document.getElementById('docRawViewer').innerText = s.raw;
+      
+      // Update buttons
+      document.querySelectorAll('.sample-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.closest('.sample-btn').classList.add('active');
+
+      // Reset output & steps
+      resetPipeline();
+    }
+
+    function resetPipeline() {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`stepCard${i}`).classList.remove('active');
+      }
+      document.getElementById('outputConsole').innerHTML = 'Документът е зареден. Натиснете <strong>"Стартирай AI Анализ"</strong> за стартиране на конвейера...';
+      const pill = document.getElementById('validationPill');
+      pill.className = 'validation-status-pill';
+      pill.innerHTML = '<i class="fa-solid fa-clock"></i> Готов за анализ';
+    }
+
+    async function runAiSimulation() {
+      const btn = document.getElementById('runDemoBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Обработка...';
+
+      const s = samples[currentSampleKey];
+
+      // Step 1: Upload
+      document.getElementById('stepCard1').classList.add('active');
+      document.getElementById('outputConsole').innerHTML = `<span style="color:#94a3b8;">[0.1s] Качване на файл: ${s.filename} ... OK</span>`;
+      await sleep(500);
+
+      // Step 2: OCR & LLM
+      document.getElementById('stepCard2').classList.add('active');
+      document.getElementById('outputConsole').innerHTML += `\n<span style="color:#38bdf8;">[0.4s] OCR сканиране завършено. LLM агент структурира полетата в JSON...</span>`;
+      await sleep(600);
+
+      // Step 3: AI Validation
+      document.getElementById('stepCard3').classList.add('active');
+      document.getElementById('outputConsole').innerHTML += `\n<span style="color:#f59e0b;">[0.8s] AI агенти проверяват математическите тегла и митническите кодове...</span>`;
+      await sleep(600);
+
+      // Step 4: Export ready
+      document.getElementById('stepCard4').classList.add('active');
+      
+      const pill = document.getElementById('validationPill');
+      if (s.validation.status === "PASSED") {
+        pill.className = 'validation-status-pill';
+        pill.innerHTML = `<i class="fa-solid fa-check-circle"></i> Валидация успешна (${s.validation.score})`;
+      } else {
+        pill.className = 'validation-status-pill error';
+        pill.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Открити грешки (${s.validation.score})`;
+      }
+
+      renderOutputTab();
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Повтори Анализа';
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.out-tab').forEach(t => t.classList.remove('active'));
+      if (tab === 'json') document.getElementById('tabJson').classList.add('active');
+      if (tab === 'validation') document.getElementById('tabValidation').classList.add('active');
+      if (tab === 'erp') document.getElementById('tabErp').classList.add('active');
+      renderOutputTab();
+    }
+
+    function renderOutputTab() {
+      const s = samples[currentSampleKey];
+      const consoleEl = document.getElementById('outputConsole');
+
+      if (currentTab === 'json') {
+        consoleEl.innerHTML = `<pre style="color:#38bdf8;">${syntaxHighlightJson(JSON.stringify(s.json, null, 2))}</pre>`;
+      } else if (currentTab === 'validation') {
+        let html = `<div style="font-family:'Plus Jakarta Sans'; font-size:0.85rem;">`;
+        html += `<div style="margin-bottom:0.75rem; font-weight:700; color:${s.validation.status === 'PASSED' ? '#10b981' : '#f43f5e'}">`;
+        html += `СТАТУС: ${s.validation.status} | Оценка на надеждност: ${s.validation.score}</div>`;
+        html += `<ul style="list-style:none; display:flex; flex-direction:column; gap:0.5rem;">`;
+        s.validation.checks.forEach(c => {
+          html += `<li style="display:flex; align-items:flex-start; gap:0.5rem; background:#0d1527; padding:0.5rem; border-radius:6px; border:1px solid #1e293b;">`;
+          html += `<span style="color:${c.passed ? '#10b981' : '#f43f5e'}">${c.passed ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-xmark"></i>'}</span>`;
+          html += `<div><strong>${c.rule}</strong><br><small style="color:#94a3b8;">${c.note}</small></div>`;
+          html += `</li>`;
+        });
+        html += `</ul></div>`;
+        consoleEl.innerHTML = html;
+      } else if (currentTab === 'erp') {
+        consoleEl.innerHTML = `<div style="color:#10b981; font-family:'JetBrains Mono'; white-space:pre-wrap;">${s.erp_format}</div>`;
+      }
+    }
+
+    function syntaxHighlightJson(json) {
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        let cls = 'color: #93c5fd;';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'color: #38bdf8; font-weight:600;';
+          } else {
+            cls = 'color: #86efac;';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'color: #fca5a5;';
+        } else if (/null/.test(match)) {
+          cls = 'color: #fcd34d;';
+        }
+        return `<span style="${cls}">${match}</span>`;
+      });
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Modal helpers
+    function openMasterDocModal() {
+      document.getElementById('masterDocModal').classList.add('open');
+    }
+    function closeMasterDocModal() {
+      document.getElementById('masterDocModal').classList.remove('open');
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSampleDoc('bl_ok');
+    });
+  </script>
+</body>
+</html>
