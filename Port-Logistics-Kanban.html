@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Port Logistics AI SaaS — Project Kanban</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #0b101e;
+      --bg-surface: #10182c;
+      --bg-column: #121c35;
+      --bg-card: #172445;
+      --bg-card-hover: #1e2f5b;
+      --border-color: #21335b;
+      --border-focus: #3b82f6;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+
+      --accent-blue: #2563eb;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #8b5cf6;
+
+      --badge-a: #3b82f6;
+      --badge-b: #10b981;
+      --badge-both: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2d4e;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+
+    /* Header */
+    header {
+      background: rgba(16, 24, 44, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.25rem;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.45);
+    }
+
+    .brand-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-text h1 span {
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.95rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: var(--text-main);
+      background: #172445;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+      color: #fff;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--border-color);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    .btn-danger-outline {
+      background: rgba(244, 63, 94, 0.08);
+      border-color: rgba(244, 63, 94, 0.25);
+      color: #fb7185;
+    }
+    .btn-danger-outline:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: var(--accent-rose);
+      color: #fff;
+    }
+
+    /* Filter & Search Bar */
+    .toolbar {
+      background: #0e1528;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 1.5rem;
+    }
+
+    .toolbar-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 380px;
+      min-width: 240px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-sub);
+      font-size: 0.85rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.55rem 0.75rem 0.55rem 2.2rem;
+      background: #141f3a;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-box input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .filters-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      font-weight: 600;
+      margin-right: 0.25rem;
+    }
+
+    .filter-pill {
+      background: #141f3a;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill:hover {
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    .filter-pill.active {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Main Kanban Board */
+    main {
+      flex: 1;
+      padding: 1.5rem;
+      max-width: 1700px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .column {
+      background: var(--bg-column);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 190px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .column-header {
+      padding: 1rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .column-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .col-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9999px;
+      background: #1a294d;
+      color: #93c5fd;
+      border: 1px solid #283e74;
+    }
+
+    .cards-container {
+      padding: 0.85rem;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      min-height: 250px;
+      transition: background-color 0.2s;
+    }
+
+    .cards-container.drag-over {
+      background: rgba(37, 99, 235, 0.08);
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* Task Card */
+    .kanban-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: grab;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .kanban-card:hover {
+      background: var(--bg-card-hover);
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    .kanban-card.dragging {
+      opacity: 0.4;
+      cursor: grabbing;
+      transform: scale(0.98);
+      border: 2px dashed var(--accent-blue);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-stage {
+      background: rgba(148, 163, 184, 0.12);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .badge-owner-a {
+      background: rgba(59, 130, 246, 0.18);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+
+    .badge-owner-b {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .badge-owner-both {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .kanban-card:hover .card-actions {
+      opacity: 1;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.15s;
+    }
+
+    .btn-icon:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-icon.delete:hover {
+      color: #fb7185;
+      background: rgba(244, 63, 94, 0.15);
+    }
+
+    .card-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.45rem;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.72rem;
+      color: var(--text-sub);
+    }
+
+    .empty-state {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 0.82rem;
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      margin: auto 0;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 15, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #111a30;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      animation: modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.15rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      background: #172445;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      color: #fff;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      background: #0d1527;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      background: #141f3a;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 8px;
+      padding: 0.75rem 1.15rem;
+      color: #fff;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      animation: toastIn 0.3s ease;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .board-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .column {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .board-grid {
+        grid-template-columns: 1fr;
+      }
+      .header-container, .toolbar-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        max-width: none;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-anchor"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Port Logistics <span>AI SaaS</span></h1>
+          <p>Варна & Бургас • Project Roadmap & Execution Board (EUR)</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="openTaskModal()">
+          <i class="fa-solid fa-plus"></i> Нова задача
+        </button>
+        <button class="btn btn-outline" onclick="exportKanbanJson()">
+          <i class="fa-solid fa-file-export"></i> Експорт JSON
+        </button>
+        <label class="btn btn-outline" style="margin: 0; cursor: pointer;">
+          <i class="fa-solid fa-file-import"></i> Импорт JSON
+          <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importKanbanJson(event)">
+        </label>
+        <button class="btn btn-danger-outline" onclick="resetToRoadmapPrompt()">
+          <i class="fa-solid fa-rotate-left"></i> Нулирай
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Search Bar -->
+  <div class="toolbar">
+    <div class="toolbar-container">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Търси задача, заглавие или етап..." oninput="filterCards()">
+      </div>
+
+      <div class="filters-group">
+        <span class="filter-label"><i class="fa-solid fa-user-group"></i> Отговорник:</span>
+        <button class="filter-pill active" data-owner="ALL" onclick="setOwnerFilter('ALL')">Всички</button>
+        <button class="filter-pill" data-owner="A" onclick="setOwnerFilter('A')">Партньор А (CTO)</button>
+        <button class="filter-pill" data-owner="B" onclick="setOwnerFilter('B')">Партньор Б (CEO)</button>
+        <button class="filter-pill" data-owner="BOTH" onclick="setOwnerFilter('BOTH')">Заедно (BOTH)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board Area -->
+  <main>
+    <div class="board-grid">
+      <!-- 1. Backlog -->
+      <div class="column" data-status="backlog">
+        <div class="column-header">
+          <div class="column-title">
+            <i class="fa-solid fa-list-check" style="color: #94a3b8;"></i>
+            <span>Backlog (Пътна карта)</span>
+          </div>
+          <span class="col-badge" id="count-backlog">0</span>
+        </div>
+        <div class="cards-container" id="col-backlog" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'backlog')"></div>
+      </div>
+
+      <!-- 2. Todo -->
+      <div class="column" data-status="todo">
+        <div class="column-header">
+          <div class="column-title">
+            <i class="fa-solid fa-bullseye" style="color: #60a5fa;"></i>
+            <span>За изпълнение (Sprint)</span>
+          </div>
+          <span class="col-badge" id="count-todo">0</span>
+        </div>
+        <div class="cards-container" id="col-todo" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'todo')"></div>
+      </div>
+
+      <!-- 3. In Progress -->
+      <div class="column" data-status="inprogress">
+        <div class="column-header">
+          <div class="column-title">
+            <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i>
+            <span>В процес (In Progress)</span>
+          </div>
+          <span class="col-badge" id="count-inprogress">0</span>
+        </div>
+        <div class="cards-container" id="col-inprogress" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'inprogress')"></div>
+      </div>
+
+      <!-- 4. Done -->
+      <div class="column" data-status="done">
+        <div class="column-header">
+          <div class="column-title">
+            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
+            <span>Готово (Done)</span>
+          </div>
+          <span class="col-badge" id="count-done">0</span>
+        </div>
+        <div class="cards-container" id="col-done" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'done')"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Create / Edit Task Modal -->
+  <div class="modal-backdrop" id="taskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle"><i class="fa-solid fa-plus-circle"></i> Нова задача</h3>
+        <button class="modal-close" onclick="closeTaskModal()">&times;</button>
+      </div>
+      <form id="taskForm" onsubmit="handleFormSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="taskId">
+          
+          <div class="form-group">
+            <label for="taskTitleInput">Заглавие на задачата *</label>
+            <input type="text" id="taskTitleInput" class="form-control" placeholder="напр. PoC скрипт за извличане на коносамент" required>
+          </div>
+
+          <div class="form-group">
+            <label for="taskDescInput">Описание и детайли</label>
+            <textarea id="taskDescInput" class="form-control" placeholder="Конкретни цели, изисквания или финансови бележки в EUR..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="taskOwnerInput">Отговорник *</label>
+              <select id="taskOwnerInput" class="form-control" required>
+                <option value="A">Партньор А (CTO / Вътрешен архитект)</option>
+                <option value="B">Партньор Б (CEO / Solutions Architect)</option>
+                <option value="BOTH">Заедно (BOTH)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="taskStatusInput">Колона (Статус) *</label>
+              <select id="taskStatusInput" class="form-control" required>
+                <option value="backlog">Backlog (Пътна карта)</option>
+                <option value="todo">За изпълнение (Sprint)</option>
+                <option value="inprogress">В процес (In Progress)</option>
+                <option value="done">Готово (Done)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="taskStageInput">Етап / Срок от пътната карта</label>
+            <input type="text" id="taskStageInput" class="form-control" placeholder="напр. Седмица 1, Месец 1, Месеци 3–4">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeTaskModal()">Отказ</button>
+          <button type="submit" class="btn btn-primary" id="saveTaskBtn">Запази задачата</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Storage Key
+    const STORAGE_KEY = 'portLogisticsKanban_v1';
+
+    // Initial Seed Data (From Master Document)
+    const SEED_DATA = [
+      {
+        id: "task-1",
+        title: "Официално разпределяне на ролите",
+        description: "Среща между съоснователите и фиксиране на Партньор А (CTO / Вътрешен архитект) и Партньор Б (CEO / Solutions Architect).",
+        owner: "BOTH",
+        stage: "Седмица 1",
+        status: "todo",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-2",
+        title: "Създаване на Git репозитори и работно пространство",
+        description: "Настройка на GitHub repo (разделение Backend/AI и Frontend/Integrations) и общ борд.",
+        owner: "BOTH",
+        stage: "Седмица 1",
+        status: "todo",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-3",
+        title: "Попълване на Lean Canvas чернова",
+        description: "Систематизиране на клиентските сегменти, UVP и разходите в EUR.",
+        owner: "BOTH",
+        stage: "Седмица 1",
+        status: "todo",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-4",
+        title: "Контакт с 5-10 спедиторски фирми във Варна",
+        description: "Customer Discovery интервюта за откриване на най-бавния документооборот.",
+        owner: "B",
+        stage: "Месец 1",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-5",
+        title: "Събиране на анонимизирани бланки",
+        description: "Набавяне на реални коносаменти (Bills of Lading), товарителници и митнически декларации със заличени данни.",
+        owner: "B",
+        stage: "Месец 1",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-6",
+        title: "Бенчмарк на OCR/LLM модели и ERP анализ",
+        description: "Тестване на точност и цена на страница (в EUR) за JSON извличане и проучване на локалните ERP формати.",
+        owner: "A",
+        stage: "Месец 1",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-7",
+        title: "Фиксиране на 1 критичен документ за MVP",
+        description: "Избор на конкретния процес с най-висока възвръщаемост за пилотния MVP.",
+        owner: "BOTH",
+        stage: "Месец 1",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-8",
+        title: "PoC AI пайплайн (PDF/Скан -> JSON)",
+        description: "Работещ бекенд скрипт за извличане и логическа валидация на тегла и контейнери.",
+        owner: "A",
+        stage: "Месец 2",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-9",
+        title: "Интерактивен прототип (Figma / Базов UI)",
+        description: "Визуално демо на Dashboard интерфейса за презентации пред клиенти и инкубатори.",
+        owner: "B",
+        stage: "Месец 2",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-10",
+        title: "Pitch Deck и кандидатстване в РАПИВ / Бизнес инкубатор – Варна",
+        description: "Подготовка на презентация, финансови прогнози в EUR и подаване на документи за Seed финансиране.",
+        owner: "B",
+        stage: "Месец 2",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-11",
+        title: "Облачна инфраструктура, БД и AI агенти за валидация",
+        description: "Изграждане на сървърната част, логове в реално време и автоматично засичане на несъответствия.",
+        owner: "A",
+        stage: "Месеци 3–4",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-12",
+        title: "Уеб Dashboard, автентикация и Excel/CSV/API експорт",
+        description: "Разработка на клиентския портал за качване, преглед, одобрение и експорт към ERP.",
+        owner: "B",
+        stage: "Месеци 3–4",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-13",
+        title: "1-месечен безплатен пилотен тест при 1-2 фирми във Варна",
+        description: "Внедряване на MVP в реална среда и измерване на спестените часове на ден.",
+        owner: "BOTH",
+        stage: "Месец 5",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-14",
+        title: "Multi-tenant архитектура и GDPR сигурност",
+        description: "Криптиране на данните и подготовка на системата за мащабиране към множество клиенти.",
+        owner: "A",
+        stage: "Месеци 5–6",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      },
+      {
+        id: "task-15",
+        title: "Case Study и B2B продажби на v1.0 (Варна и Бургас)",
+        description: "Пакетиране на резултатите от бета теста и затваряне на първите платени абонаменти.",
+        owner: "B",
+        stage: "Месеци 5–6",
+        status: "backlog",
+        createdAt: "2026-10-28"
+      }
+    ];
+
+    // State
+    let tasks = [];
+    let currentOwnerFilter = 'ALL';
+    let searchQuery = '';
+    let draggedTaskId = null;
+
+    // Initialize
+    function init() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          tasks = JSON.parse(stored);
+        } catch (e) {
+          console.error("Грешка при четене на localStorage, зареждане на SEED", e);
+          tasks = [...SEED_DATA];
+          saveTasks();
+        }
+      } else {
+        tasks = [...SEED_DATA];
+        saveTasks();
+      }
+      renderBoard();
+    }
+
+    function saveTasks() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      updateCounts();
+    }
+
+    // Rendering
+    function renderBoard() {
+      const statuses = ['backlog', 'todo', 'inprogress', 'done'];
+      statuses.forEach(status => {
+        const container = document.getElementById(`col-${status}`);
+        container.innerHTML = '';
+
+        const filtered = tasks.filter(t => {
+          if (t.status !== status) return false;
+          if (currentOwnerFilter !== 'ALL' && t.owner !== currentOwnerFilter) return false;
+          if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            const matchTitle = t.title.toLowerCase().includes(q);
+            const matchDesc = (t.description || '').toLowerCase().includes(q);
+            const matchStage = (t.stage || '').toLowerCase().includes(q);
+            if (!matchTitle && !matchDesc && !matchStage) return false;
+          }
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-folder-open" style="font-size:1.4rem; margin-bottom:0.4rem; display:block;"></i>Няма задачи</div>`;
+        } else {
+          filtered.forEach(task => {
+            container.appendChild(createCardElement(task));
+          });
+        }
+      });
+
+      updateCounts();
+    }
+
+    function createCardElement(task) {
+      const card = document.createElement('div');
+      card.className = 'kanban-card';
+      card.draggable = true;
+      card.id = `card-${task.id}`;
+      card.dataset.id = task.id;
+
+      let ownerBadgeClass = 'badge-owner-both';
+      let ownerLabel = 'BOTH';
+      if (task.owner === 'A') {
+        ownerBadgeClass = 'badge-owner-a';
+        ownerLabel = 'Партньор А';
+      } else if (task.owner === 'B') {
+        ownerBadgeClass = 'badge-owner-b';
+        ownerLabel = 'Партньор Б';
+      }
+
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-badges">
+            <span class="badge ${ownerBadgeClass}"><i class="fa-solid fa-user-tag"></i> ${ownerLabel}</span>
+            ${task.stage ? `<span class="badge badge-stage">${escapeHtml(task.stage)}</span>` : ''}
+          </div>
+          <div class="card-actions">
+            <button class="btn-icon" onclick="editTask('${task.id}')" title="Редактирай"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-icon delete" onclick="deleteTask('${task.id}')" title="Изтрий"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+        <div class="card-title">${escapeHtml(task.title)}</div>
+        ${task.description ? `<div class="card-desc">${escapeHtml(task.description)}</div>` : ''}
+        <div class="card-footer">
+          <span><i class="fa-solid fa-hashtag"></i> ${task.id}</span>
+          <span><i class="fa-regular fa-clock"></i> ${task.createdAt || '2026'}</span>
+        </div>
+      `;
+
+      card.addEventListener('dragstart', handleDragStart);
+      card.addEventListener('dragend', handleDragEnd);
+
+      return card;
+    }
+
+    function updateCounts() {
+      const counts = { backlog: 0, todo: 0, inprogress: 0, done: 0 };
+      tasks.forEach(t => {
+        if (counts[t.status] !== undefined) {
+          counts[t.status]++;
+        }
+      });
+      document.getElementById('count-backlog').innerText = counts.backlog;
+      document.getElementById('count-todo').innerText = counts.todo;
+      document.getElementById('count-inprogress').innerText = counts.inprogress;
+      document.getElementById('count-done').innerText = counts.done;
+    }
+
+    // Drag & Drop
+    function handleDragStart(e) {
+      draggedTaskId = this.dataset.id;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', draggedTaskId);
+    }
+
+    function handleDragEnd() {
+      this.classList.remove('dragging');
+      document.querySelectorAll('.cards-container').forEach(c => c.classList.remove('drag-over'));
+      draggedTaskId = null;
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e, targetStatus) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain') || draggedTaskId;
+      if (!id) return;
+
+      const task = tasks.find(t => t.id === id);
+      if (task && task.status !== targetStatus) {
+        task.status = targetStatus;
+        saveTasks();
+        renderBoard();
+        showToast(`Задачата беше преместена в "${getStatusName(targetStatus)}"`);
+      }
+    }
+
+    function getStatusName(status) {
+      switch(status) {
+        case 'backlog': return 'Backlog';
+        case 'todo': return 'За изпълнение';
+        case 'inprogress': return 'В процес';
+        case 'done': return 'Готово';
+        default: return status;
+      }
+    }
+
+    // Filtering & Searching
+    function setOwnerFilter(owner) {
+      currentOwnerFilter = owner;
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        if (btn.dataset.owner === owner) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      renderBoard();
+    }
+
+    function filterCards() {
+      searchQuery = document.getElementById('searchInput').value.trim();
+      renderBoard();
+    }
+
+    // Task CRUD
+    function openTaskModal(isEdit = false) {
+      document.getElementById('modalTitle').innerHTML = isEdit 
+        ? '<i class="fa-solid fa-pen-to-square"></i> Редакция на задача' 
+        : '<i class="fa-solid fa-plus-circle"></i> Нова задача';
+      document.getElementById('taskModal').classList.add('open');
+      document.getElementById('taskTitleInput').focus();
+    }
+
+    function closeTaskModal() {
+      document.getElementById('taskModal').classList.remove('open');
+      document.getElementById('taskForm').reset();
+      document.getElementById('taskId').value = '';
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('taskId').value;
+      const title = document.getElementById('taskTitleInput').value.trim();
+      const description = document.getElementById('taskDescInput').value.trim();
+      const owner = document.getElementById('taskOwnerInput').value;
+      const status = document.getElementById('taskStatusInput').value;
+      const stage = document.getElementById('taskStageInput').value.trim();
+
+      if (!title) return;
+
+      if (id) {
+        // Edit
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+          task.title = title;
+          task.description = description;
+          task.owner = owner;
+          task.status = status;
+          task.stage = stage;
+          showToast('Задачата е обновена успешно!');
+        }
+      } else {
+        // Create
+        const newTask = {
+          id: `task-${Date.now()}`,
+          title,
+          description,
+          owner,
+          status,
+          stage,
+          createdAt: new Date().toISOString().split('T')[0]
+        };
+        tasks.unshift(newTask);
+        showToast('Новата задача е добавена!');
+      }
+
+      saveTasks();
+      renderBoard();
+      closeTaskModal();
+    }
+
+    function editTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+
+      document.getElementById('taskId').value = task.id;
+      document.getElementById('taskTitleInput').value = task.title;
+      document.getElementById('taskDescInput').value = task.description || '';
+      document.getElementById('taskOwnerInput').value = task.owner;
+      document.getElementById('taskStatusInput').value = task.status;
+      document.getElementById('taskStageInput').value = task.stage || '';
+
+      openTaskModal(true);
+    }
+
+    function deleteTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      if (confirm(`Сигурни ли сте, че искате да изтриете: "${task.title}"?`)) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveTasks();
+        renderBoard();
+        showToast('Задачата е изтрита!');
+      }
+    }
+
+    // Export & Import
+    function exportKanbanJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `port_logistics_kanban_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('JSON файлът е изтеглен!');
+    }
+
+    function importKanbanJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (Array.isArray(parsed)) {
+            tasks = parsed;
+            saveTasks();
+            renderBoard();
+            showToast(`Успешно импортирани ${parsed.length} задачи!`);
+          } else {
+            alert('Невалиден JSON формат на задачите!');
+          }
+        } catch (err) {
+          alert('Грешка при четене на файла: ' + err.message);
+        }
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToRoadmapPrompt() {
+      if (confirm("Сигурни ли сте, че искате да нулирате борда до началните 15 задачи от официалния Master Document?")) {
+        tasks = [...SEED_DATA];
+        saveTasks();
+        renderBoard();
+        showToast('Бордът е нулиран към началната пътна карта!');
+      }
+    }
+
+    // Helper: Toast
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${escapeHtml(msg)}`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Boot
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
