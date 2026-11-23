@@ -1,1282 +1,621 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Задачи — Port Logistics AI SaaS</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <style>
-    :root {
-      --bg-dark: #0b101e;
-      --bg-surface: #10182c;
-      --bg-column: #121c35;
-      --bg-card: #172445;
-      --bg-card-hover: #1e2f5b;
-      --border-color: #21335b;
-      --border-focus: #3b82f6;
-
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-sub: #64748b;
-
-      --accent-blue: #2563eb;
-      --accent-cyan: #06b6d4;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-rose: #f43f5e;
-      --accent-purple: #8b5cf6;
-
-      --badge-martin: #3b82f6;
-      --badge-yordan: #10b981;
-      --badge-both: #f59e0b;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-dark);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e2d4e;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #3b82f6;
-    }
-
-    /* Header */
-    header {
-      background: rgba(16, 24, 44, 0.95);
-      border-bottom: 1px solid var(--border-color);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-container {
-      max-width: 1700px;
-      margin: 0 auto;
-      padding: 0.9rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-    }
-
-    .brand h1 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #fff;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.55rem 0.95rem;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      color: var(--text-main);
-      background: #172445;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
-      color: #fff;
-      border-color: #3b82f6;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-    }
-    .btn-primary:hover {
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
-    }
-
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: var(--border-color);
-      color: var(--text-muted);
-    }
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border-color: #3b82f6;
-    }
-
-    /* Filter & Search Bar */
-    .toolbar {
-      background: #0e1528;
-      border-bottom: 1px solid var(--border-color);
-      padding: 0.85rem 1.5rem;
-    }
-
-    .toolbar-container {
-      max-width: 1700px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .search-box {
-      position: relative;
-      flex: 1;
-      max-width: 380px;
-      min-width: 240px;
-    }
-
-    .search-box i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-sub);
-      font-size: 0.85rem;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 0.55rem 0.75rem 0.55rem 2.2rem;
-      background: #141f3a;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 0.85rem;
-      outline: none;
-      transition: all 0.2s;
-    }
-    .search-box input:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-    }
-
-    .filters-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-label {
-      font-size: 0.8rem;
-      color: var(--text-sub);
-      font-weight: 600;
-      margin-right: 0.25rem;
-    }
-
-    .filter-pill {
-      background: #141f3a;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 0.4rem 0.85rem;
-      border-radius: 9999px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .filter-pill:hover {
-      color: #fff;
-      border-color: #3b82f6;
-    }
-
-    .filter-pill.active {
-      background: var(--accent-blue);
-      border-color: var(--accent-blue);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
-    }
-
-    /* Main Kanban Board */
-    main {
-      flex: 1;
-      padding: 1.5rem;
-      max-width: 1700px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .board-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      align-items: start;
-    }
-
-    .column {
-      background: var(--bg-column);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      max-height: calc(100vh - 190px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-    }
-
-    .column-header {
-      padding: 1rem 1.15rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-
-    .column-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .col-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.15rem 0.55rem;
-      border-radius: 9999px;
-      background: #1a294d;
-      color: #93c5fd;
-      border: 1px solid #283e74;
-    }
-
-    .cards-container {
-      padding: 0.85rem;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      min-height: 250px;
-      transition: background-color 0.2s;
-    }
-
-    .cards-container.drag-over {
-      background: rgba(37, 99, 235, 0.08);
-      border-radius: 0 0 12px 12px;
-    }
-
-    /* Task Card */
-    .kanban-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 1rem;
-      cursor: grab;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-    }
-
-    .kanban-card:hover {
-      background: var(--bg-card-hover);
-      border-color: #3b82f6;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-    }
-
-    .kanban-card.dragging {
-      opacity: 0.4;
-      cursor: grabbing;
-      transform: scale(0.98);
-      border: 2px dashed var(--accent-blue);
-    }
-
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-bottom: 0.65rem;
-    }
-
-    .card-badges {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .badge-stage {
-      background: rgba(148, 163, 184, 0.12);
-      color: #cbd5e1;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-    }
-
-    .badge-owner-martin {
-      background: rgba(59, 130, 246, 0.18);
-      color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.35);
-    }
-
-    .badge-owner-yordan {
-      background: rgba(16, 185, 129, 0.18);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-    }
-
-    .badge-owner-both {
-      background: rgba(245, 158, 11, 0.18);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.35);
-    }
-
-    .card-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      opacity: 0.6;
-      transition: opacity 0.2s;
-    }
-
-    .kanban-card:hover .card-actions {
-      opacity: 1;
-    }
-
-    .btn-icon {
-      background: transparent;
-      border: none;
-      color: var(--text-sub);
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: all 0.15s;
-    }
-
-    .btn-icon:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-icon.delete:hover {
-      color: #fb7185;
-      background: rgba(244, 63, 94, 0.15);
-    }
-
-    .card-title {
-      font-size: 0.92rem;
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 0.45rem;
-      color: #fff;
-    }
-
-    .card-desc {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 0.75rem;
-      padding-top: 0.6rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 0.72rem;
-      color: var(--text-sub);
-    }
-
-    .empty-state {
-      padding: 2.5rem 1rem;
-      text-align: center;
-      color: var(--text-sub);
-      font-size: 0.82rem;
-      border: 1px dashed rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      margin: auto 0;
-    }
-
-    /* Modal */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 7, 15, 0.75);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal {
-      background: #111a30;
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      max-width: 540px;
-      width: 100%;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-      overflow: hidden;
-      animation: modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: scale(0.96) translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    .modal-header {
-      padding: 1.15rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .modal-header h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      color: var(--text-sub);
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-    .modal-close:hover {
-      color: #fff;
-    }
-
-    .modal-body {
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.15rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .form-group label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .form-control {
-      background: #172445;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0.65rem 0.85rem;
-      color: #fff;
-      font-size: 0.88rem;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .modal-footer {
-      padding: 1rem 1.5rem;
-      border-top: 1px solid var(--border-color);
-      background: #0d1527;
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75rem;
-    }
-
-    /* Toast Notification */
-    .toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .toast {
-      background: #141f3a;
-      border: 1px solid var(--border-color);
-      border-left: 4px solid var(--accent-blue);
-      border-radius: 8px;
-      padding: 0.75rem 1.15rem;
-      color: #fff;
-      font-size: 0.85rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      animation: toastIn 0.3s ease;
-    }
-
-    @keyframes toastIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    /* Responsive */
-    @media (max-width: 1200px) {
-      .board-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .column {
-        max-height: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .board-grid {
-        grid-template-columns: 1fr;
-      }
-      .header-container, .toolbar-container {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .search-box {
-        max-width: none;
-      }
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задачи</title>
+<style>
+  :root {
+    --bg: #f6f6f5;
+    --surface: #ffffff;
+    --border: #e4e4e2;
+    --border-strong: #cfcfcc;
+    --text: #1c1c1b;
+    --muted: #6b6b68;
+    --accent: #1f5fbf;
+    --accent-soft: #eaf1fb;
+    --danger: #b42318;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  /* Header */
+  header {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 14px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-size: 18px; margin: 0; font-weight: 600; }
+  .sync { color: var(--muted); font-size: 13px; }
+  .sync.error { color: var(--danger); }
+  .spacer { flex: 1; }
+
+  .btn {
+    border: 1px solid var(--border-strong); background: var(--surface);
+    border-radius: 6px; padding: 6px 12px; cursor: pointer;
+  }
+  .btn:hover { background: #f1f1ef; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: #1a51a3; }
+  .btn.danger { color: var(--danger); border-color: transparent; background: transparent; }
+  .btn.danger:hover { background: #fbeceb; }
+  .btn:disabled { opacity: .5; cursor: default; }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 10px 20px; border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  .chip {
+    border: 1px solid var(--border); background: transparent; border-radius: 999px;
+    padding: 4px 12px; cursor: pointer; color: var(--muted);
+  }
+  .chip[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: #fff; }
+  .week { width: auto; padding: 5px 8px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface); }
+  .search {
+    margin-left: auto; min-width: 200px; padding: 6px 10px;
+    border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface);
+  }
+
+  .notice {
+    margin: 12px 20px 0; padding: 10px 14px; border-radius: var(--radius);
+    background: var(--accent-soft); color: var(--text); font-size: 13px;
+  }
+  .notice[hidden] { display: none; }
+  .notice button { margin-left: 8px; }
+
+  /* Board */
+  main {
+    flex: 1; display: grid; grid-template-columns: repeat(4, minmax(250px, 1fr));
+    gap: 16px; padding: 16px 20px 24px; overflow-x: auto; align-items: start;
+  }
+  .column { display: flex; flex-direction: column; min-height: 120px; }
+  .column-head {
+    display: flex; align-items: baseline; gap: 8px; padding: 0 4px 8px;
+    font-weight: 600;
+  }
+  .count { color: var(--muted); font-weight: 400; }
+  .list {
+    display: flex; flex-direction: column; gap: 8px; min-height: 80px;
+    padding: 4px; border-radius: var(--radius);
+  }
+  .list.drop { background: var(--accent-soft); outline: 1px dashed var(--accent); }
+
+  .card {
+    display: block; width: 100%; text-align: left; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+  .card:hover { border-color: var(--border-strong); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .card.dragging { opacity: .4; }
+  .card-title { font-weight: 500; }
+  .card-meta { margin-top: 6px; color: var(--muted); font-size: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .owner { border: 1px solid var(--border); border-radius: 999px; padding: 0 8px; }
+  .column[data-status="done"] .card { background: transparent; }
+  .column[data-status="done"] .card-title { color: var(--muted); text-decoration: line-through; }
+  .empty { color: var(--muted); font-size: 13px; padding: 8px 4px; }
+
+  /* Dialogs */
+  dialog {
+    border: 1px solid var(--border); border-radius: 12px; padding: 0;
+    width: min(640px, calc(100vw - 32px));
+  }
+  dialog::backdrop { background: rgba(20, 20, 20, .35); }
+  .dlg-body { padding: 20px; display: grid; gap: 14px; }
+  .dlg-body h2 { margin: 0; font-size: 16px; }
+  label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+  input[type="text"], input[type="password"], select, textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border-strong);
+    border-radius: 6px; background: var(--surface); color: var(--text);
+  }
+  textarea { min-height: 260px; resize: vertical; line-height: 1.5; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dlg-foot {
+    display: flex; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border);
+    background: #fafaf9; border-radius: 0 0 12px 12px;
+  }
+  .help { font-size: 13px; color: var(--muted); margin: 0; }
+  .help ol { margin: 6px 0 0; padding-left: 20px; }
+  a { color: var(--accent); }
+
+  @media (max-width: 700px) {
+    header, .toolbar { padding-left: 12px; padding-right: 12px; }
+    main { padding: 12px; grid-template-columns: repeat(4, 82vw); }
+    .search { margin-left: 0; width: 100%; }
+    .row { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <header>
-    <div class="header-container">
-      <div class="brand">
-        <h1>Задачи</h1>
-      </div>
+<header>
+  <h1>Задачи</h1>
+  <span class="sync" id="sync" role="status">Зареждане…</span>
+  <span class="spacer"></span>
+  <button class="btn" id="btnReload" type="button">Обнови</button>
+  <button class="btn" id="btnSettings" type="button">Връзка с GitHub</button>
+  <button class="btn primary" id="btnAdd" type="button">+ Задача</button>
+</header>
 
-      <div class="header-actions">
-        <button class="btn btn-primary" onclick="openTaskModal()">
-          <i class="fa-solid fa-plus"></i> Нова задача
-        </button>
-        <button class="btn btn-outline" onclick="exportKanbanJson()">
-          <i class="fa-solid fa-file-export"></i> Експорт JSON
-        </button>
-        <label class="btn btn-outline" style="margin: 0; cursor: pointer;">
-          <i class="fa-solid fa-file-import"></i> Импорт JSON
-          <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importKanbanJson(event)">
+<div class="toolbar" role="group" aria-label="Филтър по отговорник">
+  <button class="chip" type="button" data-owner="all" aria-pressed="true">Всички</button>
+  <button class="chip" type="button" data-owner="martin" aria-pressed="false">Мартин</button>
+  <button class="chip" type="button" data-owner="yordan" aria-pressed="false">Йордан</button>
+  <button class="chip" type="button" data-owner="both" aria-pressed="false">Заедно</button>
+  <select class="week" id="weekFilter" aria-label="Филтър по седмица"><option value="">Всички седмици</option></select>
+  <input class="search" id="search" type="search" placeholder="Търси задача…" aria-label="Търси задача">
+</div>
+
+<div class="notice" id="readonlyNotice" hidden>
+  Само преглед. За да местите и редактирате задачи, свържете таблото с GitHub.
+  <button class="btn" type="button" id="btnConnect">Свържи</button>
+</div>
+
+<main id="board"></main>
+
+<!-- Task dialog -->
+<dialog id="taskDialog">
+  <form method="dialog" id="taskForm">
+    <div class="dlg-body">
+      <h2 id="taskDialogTitle">Нова задача</h2>
+      <label>Заглавие
+        <input type="text" id="fTitle" required maxlength="200">
+      </label>
+      <label>Описание
+        <textarea id="fDesc" maxlength="2000"></textarea>
+      </label>
+      <div class="row">
+        <label>Отговорник
+          <select id="fOwner">
+            <option value="martin">Мартин</option>
+            <option value="yordan">Йордан</option>
+            <option value="both">Заедно</option>
+          </select>
+        </label>
+        <label>Колона
+          <select id="fStatus"></select>
         </label>
       </div>
+      <label>Етап
+        <input type="text" id="fStage" list="stages" maxlength="40" placeholder="напр. Седмици 3–6">
+        <datalist id="stages">
+          <option value="Седмици 1–2"></option>
+          <option value="Седмици 3–6"></option>
+          <option value="Седмица 6"></option>
+          <option value="Седмици 7–10"></option>
+          <option value="Седмици 11–13"></option>
+        </datalist>
+      </label>
     </div>
-  </header>
-
-  <!-- Filter & Search Bar -->
-  <div class="toolbar">
-    <div class="toolbar-container">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Търси задача, заглавие или етап..." oninput="filterCards()">
-      </div>
-
-      <div class="filters-group">
-        <span class="filter-label"><i class="fa-solid fa-user-group"></i> Отговорник:</span>
-        <button class="filter-pill active" data-owner="ALL" onclick="setOwnerFilter('ALL')">Всички</button>
-        <button class="filter-pill" data-owner="BC" onclick="setOwnerFilter('BC')">Йордан</button>
-        <button class="filter-pill" data-owner="TC" onclick="setOwnerFilter('TC')">Мартин</button>
-        <button class="filter-pill" data-owner="BOTH" onclick="setOwnerFilter('BOTH')">Both</button>
-      </div>
+    <div class="dlg-foot">
+      <button class="btn danger" type="button" id="btnDelete">Изтрий</button>
+      <span class="spacer"></span>
+      <button class="btn" type="button" id="btnCancel">Отказ</button>
+      <button class="btn primary" type="submit" id="btnSave">Запази</button>
     </div>
-  </div>
+  </form>
+</dialog>
 
-  <!-- Board Area -->
-  <main>
-    <div class="board-grid">
-      <!-- 1. Backlog -->
-      <div class="column" data-status="backlog">
-        <div class="column-header">
-          <div class="column-title">
-            <i class="fa-solid fa-list-check" style="color: #94a3b8;"></i>
-            <span>Backlog (Пътна карта)</span>
-          </div>
-          <span class="col-badge" id="count-backlog">0</span>
-        </div>
-        <div class="cards-container" id="col-backlog" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'backlog')"></div>
+<!-- Settings dialog -->
+<dialog id="settingsDialog">
+  <form method="dialog" id="settingsForm">
+    <div class="dlg-body">
+      <h2>Връзка с GitHub</h2>
+      <p class="help">
+        Задачите се пазят във файла tasks.json в хранилището. За да ги променяте, всеки от вас въвежда свой GitHub токен веднъж на всяко устройство. Токенът остава само в този браузър.
+      </p>
+      <div class="help">
+        Собственикът на хранилището (<b id="ownerName"></b>):
+        <ol>
+          <li>Отворете <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a>.</li>
+          <li>Repository access: Only select repositories → <b id="repoName"></b>.</li>
+          <li>Permissions → Repository → Contents: Read and write. Generate token.</li>
+        </ol>
       </div>
-
-      <!-- 2. Todo -->
-      <div class="column" data-status="todo">
-        <div class="column-header">
-          <div class="column-title">
-            <i class="fa-solid fa-bullseye" style="color: #60a5fa;"></i>
-            <span>За изпълнение (Sprint)</span>
-          </div>
-          <span class="col-badge" id="count-todo">0</span>
-        </div>
-        <div class="cards-container" id="col-todo" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'todo')"></div>
+      <div class="help">
+        Съавтор (добавен като collaborator):
+        <ol>
+          <li>Отворете <a href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=Kanban" target="_blank" rel="noopener">GitHub → Classic token</a>.</li>
+          <li>Отметнете само public_repo. Generate token.</li>
+        </ol>
       </div>
-
-      <!-- 3. In Progress -->
-      <div class="column" data-status="inprogress">
-        <div class="column-header">
-          <div class="column-title">
-            <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i>
-            <span>В процес (In Progress)</span>
-          </div>
-          <span class="col-badge" id="count-inprogress">0</span>
-        </div>
-        <div class="cards-container" id="col-inprogress" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'inprogress')"></div>
-      </div>
-
-      <!-- 4. Done -->
-      <div class="column" data-status="done">
-        <div class="column-header">
-          <div class="column-title">
-            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
-            <span>Готово (Done)</span>
-          </div>
-          <span class="col-badge" id="count-done">0</span>
-        </div>
-        <div class="cards-container" id="col-done" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'done')"></div>
-      </div>
+      <label>Токен
+        <input type="password" id="fToken" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+      </label>
     </div>
-  </main>
-
-  <!-- Create / Edit Task Modal -->
-  <div class="modal-backdrop" id="taskModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="modalTitle"><i class="fa-solid fa-plus-circle"></i> Нова задача</h3>
-        <button class="modal-close" onclick="closeTaskModal()">&times;</button>
-      </div>
-      <form id="taskForm" onsubmit="handleFormSubmit(event)">
-        <div class="modal-body">
-          <input type="hidden" id="taskId">
-          
-          <div class="form-group">
-            <label for="taskTitleInput">Заглавие на задачата *</label>
-            <input type="text" id="taskTitleInput" class="form-control" placeholder="напр. PoC скрипт за извличане на коносамент" required>
-          </div>
-
-          <div class="form-group">
-            <label for="taskDescInput">Описание и детайли</label>
-            <textarea id="taskDescInput" class="form-control" placeholder="Конкретни цели, изисквания или финансови бележки в EUR..."></textarea>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="taskOwnerInput">Отговорник *</label>
-              <select id="taskOwnerInput" class="form-control" required>
-                <option value="BC">Йордан (Business / Solutions Architect)</option>
-                <option value="TC">Мартин (Tech / AI Architect)</option>
-                <option value="BOTH">Both (Заедно)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="taskStatusInput">Колона (Статус) *</label>
-              <select id="taskStatusInput" class="form-control" required>
-                <option value="backlog">Backlog (Пътна карта)</option>
-                <option value="todo">За изпълнение (Sprint)</option>
-                <option value="inprogress">В процес (In Progress)</option>
-                <option value="done">Готово (Done)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="taskStageInput">Етап / Срок от пътната карта</label>
-            <input type="text" id="taskStageInput" class="form-control" placeholder="напр. Седмица 1, Месец 1, Месеци 3–4">
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline" onclick="closeTaskModal()">Отказ</button>
-          <button type="submit" class="btn btn-primary" id="saveTaskBtn">Запази задачата</button>
-        </div>
-      </form>
+    <div class="dlg-foot">
+      <button class="btn danger" type="button" id="btnDisconnect">Изключи</button>
+      <span class="spacer"></span>
+      <button class="btn" type="button" id="btnSettingsCancel">Отказ</button>
+      <button class="btn primary" type="submit">Свържи</button>
     </div>
-  </div>
+  </form>
+</dialog>
 
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+<script>
+(() => {
+  "use strict";
 
-  <script>
-    // Storage Key
-    const STORAGE_KEY = 'portLogisticsKanban_v2';
+  // ---- Configuration ----
+  const OWNER = "martingeorgiev1899";
+  const REPO = "Port-Logistics---start-up";
+  const BRANCH = "main";
+  const FILE = "tasks.json";
+  const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+  const TOKEN_KEY = "kanbanGithubToken";
+  const POLL_MS = 30000;
 
-    // Initial Seed Data (15 tasks mapped to Йордан (BC), Мартин (TC), Both)
-    const SEED_DATA = [
-      {
-        id: "task-1",
-        title: "Официално разпределяне на ролите",
-        description: "Среща между съоснователите и фиксиране на Мартин (TC / Вътрешен архитект) и Йордан (BC / Solutions Architect).",
-        owner: "BOTH",
-        stage: "Седмица 1",
-        status: "todo",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-2",
-        title: "Създаване на Git репозитори и работно пространство",
-        description: "Настройка на GitHub repo (разделение Backend/AI и Frontend/Integrations) и общ борд.",
-        owner: "BOTH",
-        stage: "Седмица 1",
-        status: "todo",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-3",
-        title: "Попълване на Lean Canvas чернова",
-        description: "Систематизиране на клиентските сегменти, UVP и разходите в EUR.",
-        owner: "BOTH",
-        stage: "Седмица 1",
-        status: "todo",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-4",
-        title: "Контакт с 5-10 спедиторски фирми във Варна",
-        description: "Customer Discovery интервюта за откриване на най-бавния документооборот.",
-        owner: "BC",
-        stage: "Месец 1",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-5",
-        title: "Събиране на анонимизирани бланки",
-        description: "Набавяне на реални коносаменти (Bills of Lading), товарителници и митнически декларации със заличени данни.",
-        owner: "BC",
-        stage: "Месец 1",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-6",
-        title: "Бенчмарк на OCR/LLM модели и ERP анализ",
-        description: "Тестване на точност и цена на страница (в EUR) за JSON извличане и проучване на локалните ERP формати.",
-        owner: "TC",
-        stage: "Месец 1",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-7",
-        title: "Фиксиране на 1 критичен документ за MVP",
-        description: "Избор на конкретния процес с най-висока възвръщаемост за пилотния MVP.",
-        owner: "BOTH",
-        stage: "Месец 1",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-8",
-        title: "PoC AI пайплайн (PDF/Скан -> JSON)",
-        description: "Работещ бекенд скрипт за извличане и логическа валидация на тегла и контейнери.",
-        owner: "TC",
-        stage: "Месец 2",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-9",
-        title: "Интерактивен прототип (Figma / Базов UI)",
-        description: "Визуално демо на Dashboard интерфейса за презентации пред клиенти и инкубатори.",
-        owner: "BC",
-        stage: "Месец 2",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-10",
-        title: "Pitch Deck и кандидатстване в РАПИВ / Бизнес инкубатор – Варна",
-        description: "Подготовка на презентация, финансови прогнози в EUR и подаване на документи за Seed финансиране.",
-        owner: "BC",
-        stage: "Месец 2",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-11",
-        title: "Облачна инфраструктура, БД и AI агенти за валидация",
-        description: "Изграждане на сървърната част, логове в реално време и автоматично засичане на несъответствия.",
-        owner: "TC",
-        stage: "Месеци 3–4",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-12",
-        title: "Уеб Dashboard, автентикация и Excel/CSV/API експорт",
-        description: "Разработка на клиентския портал за качване, преглед, одобрение и експорт към ERP.",
-        owner: "BC",
-        stage: "Месеци 3–4",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-13",
-        title: "1-месечен безплатен пилотен тест при 1-2 фирми във Варна",
-        description: "Внедряване на MVP в реална среда и измерване на спестените часове на ден.",
-        owner: "BOTH",
-        stage: "Месец 5",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-14",
-        title: "Multi-tenant архитектура и GDPR сигурност",
-        description: "Криптиране на данните и подготовка на системата за мащабиране към множество клиенти.",
-        owner: "TC",
-        stage: "Месеци 5–6",
-        status: "backlog",
-        createdAt: "2026-10-28"
-      },
-      {
-        id: "task-15",
-        title: "Case Study и B2B продажби на v1.0 (Варна и Бургас)",
-        description: "Пакетиране на резултатите от бета теста и затваряне на първите платени абонаменти.",
-        owner: "BC",
-        stage: "Месеци 5–6",
-        status: "backlog",
-        createdAt: "2026-10-28"
+  const COLUMNS = [
+    { key: "backlog", label: "Предстои" },
+    { key: "week", label: "Тази седмица" },
+    { key: "doing", label: "В процес" },
+    { key: "done", label: "Готово" },
+  ];
+  const OWNERS = { martin: "Мартин", yordan: "Йордан", both: "Заедно" };
+
+  // ---- State ----
+  let tasks = [];
+  let sha = null;
+  let token = readToken();
+  let ownerFilter = "all";
+  let query = "";
+  let weekFilter = "";
+  let editingId = null;
+  let saving = false;
+  let pending = [];           // queued operations: {fn, msg}
+  let lastSync = null;
+  let syncError = "";
+
+  // ---- Helpers ----
+  const $ = (id) => document.getElementById(id);
+  function readToken() { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; } }
+  function writeToken(v) { try { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); } catch {} }
+  function b64encode(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = ""; for (const b of bytes) bin += String.fromCharCode(b);
+    return btoa(bin);
+  }
+  function b64decode(b64) {
+    const bin = atob(b64.replace(/\n/g, ""));
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+  function uid() { return "t-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function today() { return new Date().toISOString().slice(0, 10); }
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function canEdit() { return !!token; }
+
+  // ---- GitHub I/O ----
+  function headers() {
+    const h = { "Accept": "application/vnd.github+json" };
+    if (token) h["Authorization"] = "Bearer " + token;
+    return h;
+  }
+  async function fetchRemote() {
+    const res = await fetch(`${API}?ref=${BRANCH}&t=${Date.now()}`, { headers: headers(), cache: "no-store" });
+    if (res.status === 401) throw new Error("Невалиден токен. Проверете „Връзка с GitHub“.");
+    if (res.status === 404) return { data: { tasks: [] }, sha: null };
+    if (!res.ok) {
+      // Fallback for read-only visitors (e.g. API rate limit): the copy served with the page.
+      if (!token) {
+        const r2 = await fetch(`./${FILE}?t=${Date.now()}`, { cache: "no-store" });
+        if (r2.ok) return { data: await r2.json(), sha: null };
       }
-    ];
-
-    // State
-    let tasks = [];
-    let currentOwnerFilter = 'ALL';
-    let searchQuery = '';
-    let draggedTaskId = null;
-
-    // Helper: Normalize owners from older storage format if present
-    function normalizeOwner(owner) {
-      if (owner === 'A') return 'TC';
-      if (owner === 'B') return 'BC';
-      return owner;
+      throw new Error(`GitHub отговори с ${res.status}.`);
     }
+    const json = await res.json();
+    return { data: JSON.parse(b64decode(json.content)), sha: json.sha };
+  }
+  async function putRemote(data, baseSha, message) {
+    const body = {
+      message,
+      content: b64encode(JSON.stringify(data, null, 2) + "\n"),
+      branch: BRANCH,
+    };
+    if (baseSha) body.sha = baseSha;
+    const res = await fetch(API, { method: "PUT", headers: { ...headers(), "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    if (res.status === 409 || res.status === 422) return { conflict: true };
+    if (res.status === 401 || res.status === 403) throw new Error("Токенът няма право за запис (нужно е Contents: Read and write).");
+    if (!res.ok) throw new Error(`Записът не успя (${res.status}).`);
+    const json = await res.json();
+    return { sha: json.content.sha };
+  }
 
-    // Initialize
-    function init() {
-      const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('portLogisticsKanban_v1');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          tasks = parsed.map(t => ({
-            ...t,
-            owner: normalizeOwner(t.owner)
-          }));
-          saveTasks();
-        } catch (e) {
-          console.error("Грешка при четене на localStorage, зареждане на SEED", e);
-          tasks = [...SEED_DATA];
-          saveTasks();
-        }
-      } else {
-        tasks = [...SEED_DATA];
-        saveTasks();
+  async function load() {
+    try {
+      const { data, sha: s } = await fetchRemote();
+      tasks = Array.isArray(data.tasks) ? data.tasks : [];
+      sha = s;
+      lastSync = new Date();
+      syncError = "";
+    } catch (e) {
+      syncError = e.message;
+    }
+    render();
+  }
+
+  // Each change is an operation applied to the newest copy from GitHub,
+  // so simultaneous edits by Martin and Yordan do not overwrite each other.
+  function commit(fn, msg) {
+    if (!canEdit()) { openSettings(); return; }
+    tasks = fn(structuredClone(tasks));
+    pending.push({ fn, msg });
+    render();
+    flush();
+  }
+  async function flush() {
+    if (saving || pending.length === 0) return;
+    saving = true; renderSync();
+    const batch = pending.splice(0);
+    const msg = "Задачи: " + batch.map((b) => b.msg).join("; ");
+    try {
+      for (let attempt = 0; attempt < 4; attempt++) {
+        const { data, sha: s } = await fetchRemote();
+        let next = Array.isArray(data.tasks) ? data.tasks : [];
+        for (const b of batch) next = b.fn(next);
+        const out = { version: 1, updatedAt: new Date().toISOString(), tasks: next };
+        const r = await putRemote(out, s, msg.slice(0, 200));
+        if (r.conflict) continue;
+        sha = r.sha;
+        tasks = next;
+        for (const p of pending) tasks = p.fn(structuredClone(tasks));
+        lastSync = new Date();
+        syncError = "";
+        break;
       }
-      renderBoard();
+    } catch (e) {
+      syncError = e.message;
+      pending.unshift(...batch);
     }
+    saving = false;
+    render();
+    if (pending.length && !syncError) flush();
+  }
 
-    function saveTasks() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-      updateCounts();
+  // ---- Operations ----
+  const ops = {
+    add: (t) => (list) => list.concat([t]),
+    update: (id, patch) => (list) => list.map((t) => t.id === id ? { ...t, ...patch, updatedAt: today() } : t),
+    remove: (id) => (list) => list.filter((t) => t.id !== id),
+  };
+  function nextOrder(status) {
+    const inCol = tasks.filter((t) => t.status === status);
+    return inCol.length ? Math.max(...inCol.map((t) => t.order || 0)) + 1 : 1;
+  }
+
+  // ---- Rendering ----
+  function visible(t) {
+    if (ownerFilter !== "all" && t.owner !== ownerFilter) return false;
+    if (weekFilter && t.stage !== weekFilter) return false;
+    if (query) {
+      const q = query.toLowerCase();
+      return (t.title + " " + (t.description || "") + " " + (t.stage || "")).toLowerCase().includes(q);
     }
+    return true;
+  }
 
-    // Rendering
-    function renderBoard() {
-      const statuses = ['backlog', 'todo', 'inprogress', 'done'];
-      statuses.forEach(status => {
-        const container = document.getElementById(`col-${status}`);
-        container.innerHTML = '';
+  function render() {
+    const board = $("board");
+    board.replaceChildren();
+    for (const col of COLUMNS) {
+      const items = tasks.filter((t) => t.status === col.key)
+        .sort((a, b) => (a.order || 0) - (b.order || 0));
+      const shown = items.filter(visible);
 
-        const filtered = tasks.filter(t => {
-          if (t.status !== status) return false;
-          const owner = normalizeOwner(t.owner);
-          if (currentOwnerFilter !== 'ALL' && owner !== currentOwnerFilter) return false;
-          if (searchQuery) {
-            const q = searchQuery.toLowerCase();
-            const matchTitle = t.title.toLowerCase().includes(q);
-            const matchDesc = (t.description || '').toLowerCase().includes(q);
-            const matchStage = (t.stage || '').toLowerCase().includes(q);
-            if (!matchTitle && !matchDesc && !matchStage) return false;
-          }
-          return true;
-        });
+      const column = el("section", "column");
+      column.dataset.status = col.key;
+      column.setAttribute("aria-label", col.label);
+      const head = el("div", "column-head");
+      head.append(el("span", null, col.label), el("span", "count", String(shown.length)));
+      const list = el("div", "list");
+      list.dataset.status = col.key;
+      addDropHandlers(list);
 
-        if (filtered.length === 0) {
-          container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-folder-open" style="font-size:1.4rem; margin-bottom:0.4rem; display:block;"></i>Няма задачи</div>`;
-        } else {
-          filtered.forEach(task => {
-            container.appendChild(createCardElement(task));
-          });
-        }
-      });
-
-      updateCounts();
+      if (shown.length === 0) list.append(el("div", "empty", "Няма задачи"));
+      for (const t of shown) list.append(renderCard(t));
+      column.append(head, list);
+      board.append(column);
     }
+    $("readonlyNotice").hidden = canEdit();
+    renderWeekOptions();
+    renderSync();
+  }
 
-    function createCardElement(task) {
-      const card = document.createElement('div');
-      card.className = 'kanban-card';
-      card.draggable = true;
-      card.id = `card-${task.id}`;
-      card.dataset.id = task.id;
+  function renderWeekOptions() {
+    const sel = $("weekFilter");
+    const stages = [...new Set(tasks.map((t) => t.stage).filter(Boolean))]
+      .sort((a, b) => (parseInt(a.replace(/\D+/, "")) || 0) - (parseInt(b.replace(/\D+/, "")) || 0));
+    const current = [...sel.options].slice(1).map((o) => o.value).join("|");
+    if (current === stages.join("|")) return;
+    sel.replaceChildren(new Option("Всички седмици", ""));
+    for (const s of stages) sel.append(new Option(s, s));
+    sel.value = stages.includes(weekFilter) ? weekFilter : "";
+  }
 
-      const owner = normalizeOwner(task.owner);
-      let ownerBadgeClass = 'badge-owner-both';
-      let ownerLabel = 'Both';
+  function renderCard(t) {
+    const card = el("div", "card");
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.dataset.id = t.id;
+    card.draggable = canEdit();
+    card.append(el("div", "card-title", t.title));
+    const meta = el("div", "card-meta");
+    meta.append(el("span", "owner", OWNERS[t.owner] || "—"));
+    if (t.stage) meta.append(el("span", null, t.stage));
+    card.append(meta);
+    card.addEventListener("click", () => openTask(t.id));
+    card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openTask(t.id); } });
+    card.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text/plain", t.id);
+      e.dataTransfer.effectAllowed = "move";
+      card.classList.add("dragging");
+    });
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+    return card;
+  }
 
-      if (owner === 'TC') {
-        ownerBadgeClass = 'badge-owner-martin';
-        ownerLabel = 'Мартин';
-      } else if (owner === 'BC') {
-        ownerBadgeClass = 'badge-owner-yordan';
-        ownerLabel = 'Йордан';
-      }
-
-      card.innerHTML = `
-        <div class="card-top">
-          <div class="card-badges">
-            <span class="badge ${ownerBadgeClass}"><i class="fa-solid fa-user-tag"></i> ${ownerLabel}</span>
-            ${task.stage ? `<span class="badge badge-stage">${escapeHtml(task.stage)}</span>` : ''}
-          </div>
-          <div class="card-actions">
-            <button class="btn-icon" onclick="editTask('${task.id}')" title="Редактирай"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-icon delete" onclick="deleteTask('${task.id}')" title="Изтрий"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        </div>
-        <div class="card-title">${escapeHtml(task.title)}</div>
-        ${task.description ? `<div class="card-desc">${escapeHtml(task.description)}</div>` : ''}
-        <div class="card-footer">
-          <span><i class="fa-solid fa-hashtag"></i> ${task.id}</span>
-          <span><i class="fa-regular fa-clock"></i> ${task.createdAt || '2026'}</span>
-        </div>
-      `;
-
-      card.addEventListener('dragstart', handleDragStart);
-      card.addEventListener('dragend', handleDragEnd);
-
-      return card;
-    }
-
-    function updateCounts() {
-      const counts = { backlog: 0, todo: 0, inprogress: 0, done: 0 };
-      tasks.forEach(t => {
-        if (counts[t.status] !== undefined) {
-          counts[t.status]++;
-        }
-      });
-      document.getElementById('count-backlog').innerText = counts.backlog;
-      document.getElementById('count-todo').innerText = counts.todo;
-      document.getElementById('count-inprogress').innerText = counts.inprogress;
-      document.getElementById('count-done').innerText = counts.done;
-    }
-
-    // Drag & Drop
-    function handleDragStart(e) {
-      draggedTaskId = this.dataset.id;
-      this.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', draggedTaskId);
-    }
-
-    function handleDragEnd() {
-      this.classList.remove('dragging');
-      document.querySelectorAll('.cards-container').forEach(c => c.classList.remove('drag-over'));
-      draggedTaskId = null;
-    }
-
-    function handleDragOver(e) {
+  function addDropHandlers(list) {
+    list.addEventListener("dragover", (e) => {
+      if (!canEdit()) return;
       e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      e.currentTarget.classList.add('drag-over');
-    }
-
-    function handleDragLeave(e) {
-      e.currentTarget.classList.remove('drag-over');
-    }
-
-    function handleDrop(e, targetStatus) {
+      list.classList.add("drop");
+    });
+    list.addEventListener("dragleave", (e) => {
+      if (!list.contains(e.relatedTarget)) list.classList.remove("drop");
+    });
+    list.addEventListener("drop", (e) => {
       e.preventDefault();
-      e.currentTarget.classList.remove('drag-over');
-      const id = e.dataTransfer.getData('text/plain') || draggedTaskId;
-      if (!id) return;
-
-      const task = tasks.find(t => t.id === id);
-      if (task && task.status !== targetStatus) {
-        task.status = targetStatus;
-        saveTasks();
-        renderBoard();
-        showToast(`Задачата беше преместена в "${getStatusName(targetStatus)}"`);
-      }
-    }
-
-    function getStatusName(status) {
-      switch(status) {
-        case 'backlog': return 'Backlog';
-        case 'todo': return 'За изпълнение';
-        case 'inprogress': return 'В процес';
-        case 'done': return 'Готово';
-        default: return status;
-      }
-    }
-
-    // Filtering & Searching
-    function setOwnerFilter(owner) {
-      currentOwnerFilter = owner;
-      document.querySelectorAll('.filter-pill').forEach(btn => {
-        if (btn.dataset.owner === owner) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-      renderBoard();
-    }
-
-    function filterCards() {
-      searchQuery = document.getElementById('searchInput').value.trim();
-      renderBoard();
-    }
-
-    // Task CRUD
-    function openTaskModal(isEdit = false) {
-      document.getElementById('modalTitle').innerHTML = isEdit 
-        ? '<i class="fa-solid fa-pen-to-square"></i> Редакция на задача' 
-        : '<i class="fa-solid fa-plus-circle"></i> Нова задача';
-      document.getElementById('taskModal').classList.add('open');
-      document.getElementById('taskTitleInput').focus();
-    }
-
-    function closeTaskModal() {
-      document.getElementById('taskModal').classList.remove('open');
-      document.getElementById('taskForm').reset();
-      document.getElementById('taskId').value = '';
-    }
-
-    function handleFormSubmit(e) {
-      e.preventDefault();
-      const id = document.getElementById('taskId').value;
-      const title = document.getElementById('taskTitleInput').value.trim();
-      const description = document.getElementById('taskDescInput').value.trim();
-      const owner = document.getElementById('taskOwnerInput').value;
-      const status = document.getElementById('taskStatusInput').value;
-      const stage = document.getElementById('taskStageInput').value.trim();
-
-      if (!title) return;
-
-      if (id) {
-        // Edit
-        const task = tasks.find(t => t.id === id);
-        if (task) {
-          task.title = title;
-          task.description = description;
-          task.owner = owner;
-          task.status = status;
-          task.stage = stage;
-          showToast('Задачата е обновена успешно!');
-        }
-      } else {
-        // Create
-        const newTask = {
-          id: `task-${Date.now()}`,
-          title,
-          description,
-          owner,
-          status,
-          stage,
-          createdAt: new Date().toISOString().split('T')[0]
-        };
-        tasks.unshift(newTask);
-        showToast('Новата задача е добавена!');
-      }
-
-      saveTasks();
-      renderBoard();
-      closeTaskModal();
-    }
-
-    function editTask(id) {
-      const task = tasks.find(t => t.id === id);
+      list.classList.remove("drop");
+      const id = e.dataTransfer.getData("text/plain");
+      const task = tasks.find((t) => t.id === id);
       if (!task) return;
-
-      document.getElementById('taskId').value = task.id;
-      document.getElementById('taskTitleInput').value = task.title;
-      document.getElementById('taskDescInput').value = task.description || '';
-      document.getElementById('taskOwnerInput').value = normalizeOwner(task.owner);
-      document.getElementById('taskStatusInput').value = task.status;
-      document.getElementById('taskStageInput').value = task.stage || '';
-
-      openTaskModal(true);
-    }
-
-    function deleteTask(id) {
-      const task = tasks.find(t => t.id === id);
-      if (!task) return;
-      if (confirm(`Сигурни ли сте, че искате да изтриете: "${task.title}"?`)) {
-        tasks = tasks.filter(t => t.id !== id);
-        saveTasks();
-        renderBoard();
-        showToast('Задачата е изтрита!');
+      const status = list.dataset.status;
+      // Position: before the card under the pointer, otherwise at the end.
+      const target = e.target.closest(".card");
+      if (target && target.dataset.id === id) return;
+      let order;
+      if (target && target.dataset.id !== id) {
+        const col = tasks.filter((t) => t.status === status && t.id !== id).sort((a, b) => a.order - b.order);
+        const idx = col.findIndex((t) => t.id === target.dataset.id);
+        const prev = idx > 0 ? col[idx - 1].order : col[idx].order - 1;
+        order = (prev + col[idx].order) / 2;
+      } else {
+        order = nextOrder(status);
       }
+      if (task.status === status && !target) return;
+      const label = COLUMNS.find((c) => c.key === status).label;
+      commit(ops.update(id, { status, order }), `„${task.title}“ → ${label}`);
+    });
+  }
+
+  function renderSync() {
+    const s = $("sync");
+    s.classList.toggle("error", !!syncError);
+    if (syncError) { s.textContent = syncError; return; }
+    if (saving || pending.length) { s.textContent = "Записване…"; return; }
+    if (!lastSync) { s.textContent = "Зареждане…"; return; }
+    const mins = Math.round((Date.now() - lastSync) / 60000);
+    s.textContent = (canEdit() ? "Запазено" : "Обновено") + (mins < 1 ? " току-що" : ` преди ${mins} мин`);
+  }
+
+  // ---- Task dialog ----
+  function openTask(id) {
+    editingId = id;
+    const t = tasks.find((x) => x.id === id);
+    $("taskDialogTitle").textContent = t ? "Задача" : "Нова задача";
+    $("fTitle").value = t ? t.title : "";
+    $("fDesc").value = t ? (t.description || "") : "";
+    $("fOwner").value = t ? t.owner : "martin";
+    $("fStatus").value = t ? t.status : "week";
+    $("fStage").value = t ? (t.stage || "") : "";
+    $("btnDelete").hidden = !t;
+    for (const f of ["fTitle", "fDesc", "fOwner", "fStatus", "fStage"]) $(f).disabled = !canEdit();
+    $("btnSave").hidden = !canEdit();
+    $("btnDelete").disabled = !canEdit();
+    $("taskDialog").showModal();
+    if (canEdit()) $("fTitle").focus();
+  }
+
+  $("taskForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = $("fTitle").value.trim();
+    if (!title) return;
+    const data = {
+      title,
+      description: $("fDesc").value.trim(),
+      owner: $("fOwner").value,
+      status: $("fStatus").value,
+      stage: $("fStage").value.trim(),
+    };
+    const existing = tasks.find((t) => t.id === editingId);
+    if (existing) {
+      if (existing.status !== data.status) data.order = nextOrder(data.status);
+      commit(ops.update(existing.id, data), `промяна на „${title}“`);
+    } else {
+      const t = { id: uid(), ...data, order: nextOrder(data.status), createdAt: today(), updatedAt: today() };
+      commit(ops.add(t), `нова „${title}“`);
     }
+    $("taskDialog").close();
+  });
+  $("btnCancel").addEventListener("click", () => $("taskDialog").close());
+  $("btnDelete").addEventListener("click", () => {
+    const t = tasks.find((x) => x.id === editingId);
+    if (!t) return;
+    if (!confirm(`Да се изтрие ли „${t.title}“?`)) return;
+    commit(ops.remove(t.id), `изтрита „${t.title}“`);
+    $("taskDialog").close();
+  });
 
-    // Export & Import
-    function exportKanbanJson() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `port_logistics_kanban_${new Date().toISOString().split('T')[0]}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-      showToast('JSON файлът е изтеглен!');
-    }
+  // ---- Settings dialog ----
+  function openSettings() {
+    $("fToken").value = "";
+    $("fToken").placeholder = token ? "Свързано. Поставете нов токен, за да го смените." : "github_pat_…";
+    $("btnDisconnect").hidden = !token;
+    $("settingsDialog").showModal();
+    $("fToken").focus();
+  }
+  $("settingsForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const v = $("fToken").value.trim();
+    if (!v) { $("settingsDialog").close(); return; }
+    token = v; writeToken(v);
+    $("settingsDialog").close();
+    await load();
+  });
+  $("btnSettingsCancel").addEventListener("click", () => $("settingsDialog").close());
+  $("btnDisconnect").addEventListener("click", () => {
+    token = ""; writeToken("");
+    $("settingsDialog").close();
+    render();
+  });
 
-    function importKanbanJson(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+  // ---- Toolbar ----
+  for (const chip of document.querySelectorAll(".chip")) {
+    chip.addEventListener("click", () => {
+      ownerFilter = chip.dataset.owner;
+      for (const c of document.querySelectorAll(".chip")) c.setAttribute("aria-pressed", String(c === chip));
+      render();
+    });
+  }
+  $("weekFilter").addEventListener("change", (e) => { weekFilter = e.target.value; render(); });
+  $("search").addEventListener("input", (e) => { query = e.target.value.trim(); render(); });
+  $("btnAdd").addEventListener("click", () => canEdit() ? openTask(null) : openSettings());
+  $("btnSettings").addEventListener("click", openSettings);
+  $("btnConnect").addEventListener("click", openSettings);
+  $("btnReload").addEventListener("click", () => { if (!saving) load(); });
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          if (Array.isArray(parsed)) {
-            tasks = parsed.map(t => ({
-              ...t,
-              owner: normalizeOwner(t.owner)
-            }));
-            saveTasks();
-            renderBoard();
-            showToast(`Успешно импортирани ${parsed.length} задачи!`);
-          } else {
-            alert('Невалиден JSON формат на задачите!');
-          }
-        } catch (err) {
-          alert('Грешка при четене на файла: ' + err.message);
-        }
-        event.target.value = '';
-      };
-      reader.readAsText(file);
-    }
-
-    // Helper: Toast
-    function showToast(msg) {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${escapeHtml(msg)}`;
-      container.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    // Boot
-    window.addEventListener('DOMContentLoaded', init);
-  </script>
+  // ---- Init ----
+  $("ownerName").textContent = OWNER;
+  $("repoName").textContent = REPO;
+  for (const c of COLUMNS) {
+    const o = document.createElement("option");
+    o.value = c.key; o.textContent = c.label;
+    $("fStatus").append(o);
+  }
+  load();
+  setInterval(() => {
+    const busy = saving || pending.length || $("taskDialog").open || $("settingsDialog").open;
+    if (!busy && document.visibilityState === "visible" && token) load();
+    else renderSync();
+  }, POLL_MS);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && token && !saving && !pending.length) load();
+  });
+})();
+</script>
 </body>
 </html>
