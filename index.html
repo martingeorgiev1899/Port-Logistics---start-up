@@ -37,6 +37,7 @@
   .sync { color: var(--muted); font-size: 13px; }
   .sync.error { color: var(--danger); }
   .spacer { flex: 1; }
+  .hdr-actions { display: contents; }
 
   .btn {
     border: 1px solid var(--border-strong); background: var(--surface);
@@ -127,11 +128,57 @@
   .help ol { margin: 6px 0 0; padding-left: 20px; }
   a { color: var(--accent); }
 
+  /* Column tabs (phone only) */
+  .tabs { display: none; }
+  .tab {
+    flex: 1; border: 0; background: transparent; padding: 10px 4px; cursor: pointer;
+    color: var(--muted); border-bottom: 2px solid transparent; font-size: 13px; white-space: nowrap;
+  }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+  .tab .count { margin-left: 3px; }
+
+  /* Quick move inside the task dialog */
+  .move { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .move[hidden] { display: none; }
+  .move-label { font-size: 13px; color: var(--muted); margin-right: 2px; }
+
   @media (max-width: 700px) {
-    header, .toolbar { padding-left: 12px; padding-right: 12px; }
-    main { padding: 12px; grid-template-columns: repeat(4, 82vw); }
-    .search { margin-left: 0; width: 100%; }
-    .row { grid-template-columns: 1fr; }
+    body { font-size: 15px; }
+    header { padding: 10px 12px; gap: 8px; }
+    header h1 { font-size: 17px; }
+    header .spacer { display: none; }
+    .sync { flex: 1; text-align: right; font-size: 12px; }
+    .hdr-actions { display: flex; gap: 8px; width: 100%; }
+    .hdr-actions .btn { flex: 1; padding: 9px 6px; }
+    .long { display: none; }
+    .toolbar { padding: 8px 12px; gap: 8px; }
+    .chips { display: flex; gap: 6px; overflow-x: auto; width: 100%; scrollbar-width: none; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { padding: 7px 14px; white-space: nowrap; }
+    .week, .search { flex: 1 1 140px; min-width: 0; margin-left: 0; padding: 9px 10px; font-size: 16px; }
+    .notice { margin: 10px 12px 0; }
+    .tabs {
+      display: flex; position: sticky; top: 0; z-index: 2;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    main { display: block; padding: 12px 12px 32px; overflow: visible; }
+    .column { display: none; }
+    .column.active { display: flex; }
+    .column-head { display: none; }
+    .card { padding: 12px 14px; }
+    .card-title { font-size: 15px; }
+    dialog {
+      width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh;
+      margin: 0; border: 0; border-radius: 0;
+    }
+    dialog form { display: flex; flex-direction: column; height: 100%; }
+    .dlg-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .dlg-foot { border-radius: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+    .dlg-foot .btn { padding: 10px 14px; }
+    input[type="text"], input[type="password"], select, textarea { font-size: 16px; }
+    textarea { min-height: 45vh; }
+    .row { grid-template-columns: 1fr 1fr; }
+    .move .btn { padding: 8px 12px; }
   }
 </style>
 </head>
@@ -141,16 +188,20 @@
   <h1>Задачи</h1>
   <span class="sync" id="sync" role="status">Зареждане…</span>
   <span class="spacer"></span>
-  <button class="btn" id="btnReload" type="button">Обнови</button>
-  <button class="btn" id="btnSettings" type="button">Връзка с GitHub</button>
-  <button class="btn primary" id="btnAdd" type="button">+ Задача</button>
+  <div class="hdr-actions">
+    <button class="btn" id="btnReload" type="button">Обнови</button>
+    <button class="btn" id="btnSettings" type="button"><span class="long">Връзка с </span>GitHub</button>
+    <button class="btn primary" id="btnAdd" type="button">+ Задача</button>
+  </div>
 </header>
 
 <div class="toolbar" role="group" aria-label="Филтър по отговорник">
+  <div class="chips">
   <button class="chip" type="button" data-owner="all" aria-pressed="true">Всички</button>
   <button class="chip" type="button" data-owner="martin" aria-pressed="false">Мартин</button>
   <button class="chip" type="button" data-owner="yordan" aria-pressed="false">Йордан</button>
   <button class="chip" type="button" data-owner="both" aria-pressed="false">Заедно</button>
+  </div>
   <select class="week" id="weekFilter" aria-label="Филтър по седмица"><option value="">Всички седмици</option></select>
   <input class="search" id="search" type="search" placeholder="Търси задача…" aria-label="Търси задача">
 </div>
@@ -160,6 +211,8 @@
   <button class="btn" type="button" id="btnConnect">Свържи</button>
 </div>
 
+<nav class="tabs" id="tabs" role="tablist" aria-label="Колони"></nav>
+
 <main id="board"></main>
 
 <!-- Task dialog -->
@@ -167,6 +220,7 @@
   <form method="dialog" id="taskForm">
     <div class="dlg-body">
       <h2 id="taskDialogTitle">Нова задача</h2>
+      <div class="move" id="moveRow" hidden><span class="move-label">Премести в:</span></div>
       <label>Заглавие
         <input type="text" id="fTitle" required maxlength="200">
       </label>
@@ -256,7 +310,7 @@
 
   const COLUMNS = [
     { key: "backlog", label: "Предстои" },
-    { key: "week", label: "Тази седмица" },
+    { key: "week", label: "Тази седмица", short: "Седмица" },
     { key: "doing", label: "В процес" },
     { key: "done", label: "Готово" },
   ];
@@ -277,6 +331,10 @@
 
   // ---- Helpers ----
   const $ = (id) => document.getElementById(id);
+  const TAB_KEY = "kanbanTab";
+  let activeTab = (() => { try { return localStorage.getItem(TAB_KEY) || "week"; } catch { return "week"; } })();
+  if (!["backlog", "week", "doing", "done"].includes(activeTab)) activeTab = "week";
+  function writeTab(v) { try { localStorage.setItem(TAB_KEY, v); } catch {} }
   function readToken() { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; } }
   function writeToken(v) { try { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); } catch {} }
   function b64encode(str) {
@@ -411,13 +469,15 @@
   function render() {
     const board = $("board");
     board.replaceChildren();
+    const counts = {};
     for (const col of COLUMNS) {
       const items = tasks.filter((t) => t.status === col.key)
         .sort((a, b) => (a.order || 0) - (b.order || 0));
       const shown = items.filter(visible);
 
-      const column = el("section", "column");
+      const column = el("section", "column" + (col.key === activeTab ? " active" : ""));
       column.dataset.status = col.key;
+      counts[col.key] = shown.length;
       column.setAttribute("aria-label", col.label);
       const head = el("div", "column-head");
       head.append(el("span", null, col.label), el("span", "count", String(shown.length)));
@@ -430,9 +490,24 @@
       column.append(head, list);
       board.append(column);
     }
+    renderTabs(counts);
     $("readonlyNotice").hidden = canEdit();
     renderWeekOptions();
     renderSync();
+  }
+
+  function renderTabs(counts) {
+    const nav = $("tabs");
+    nav.replaceChildren();
+    for (const col of COLUMNS) {
+      const b = el("button", "tab");
+      b.type = "button";
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-selected", String(col.key === activeTab));
+      b.append(document.createTextNode(col.short || col.label), el("span", "count", String(counts[col.key] || 0)));
+      b.addEventListener("click", () => { activeTab = col.key; writeTab(col.key); render(); });
+      nav.append(b);
+    }
   }
 
   function renderWeekOptions() {
@@ -526,8 +601,27 @@
     for (const f of ["fTitle", "fDesc", "fOwner", "fStatus", "fStage"]) $(f).disabled = !canEdit();
     $("btnSave").hidden = !canEdit();
     $("btnDelete").disabled = !canEdit();
+    renderMoveRow(t);
     $("taskDialog").showModal();
-    if (canEdit()) $("fTitle").focus();
+    if (canEdit() && !t) $("fTitle").focus();
+    else $("taskDialog").querySelector(".dlg-body").scrollTop = 0;
+  }
+
+  function renderMoveRow(t) {
+    const row = $("moveRow");
+    row.replaceChildren(el("span", "move-label", "Премести в:"));
+    row.hidden = !t || !canEdit();
+    if (row.hidden) return;
+    for (const col of COLUMNS) {
+      if (col.key === t.status) continue;
+      const b = el("button", "btn", col.label);
+      b.type = "button";
+      b.addEventListener("click", () => {
+        commit(ops.update(t.id, { status: col.key, order: nextOrder(col.key) }), `„${t.title}“ → ${col.label}`);
+        $("taskDialog").close();
+      });
+      row.append(b);
+    }
   }
 
   $("taskForm").addEventListener("submit", (e) => {
