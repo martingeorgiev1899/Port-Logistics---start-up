@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Port Logistics AI SaaS — Project Kanban</title>
+  <title>Задачи — Port Logistics AI SaaS</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,8 +31,8 @@
       --accent-rose: #f43f5e;
       --accent-purple: #8b5cf6;
 
-      --badge-a: #3b82f6;
-      --badge-b: #10b981;
+      --badge-martin: #3b82f6;
+      --badge-yordan: #10b981;
       --badge-both: #f59e0b;
     }
 
@@ -92,42 +92,13 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
     }
 
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 1.25rem;
-      box-shadow: 0 0 20px rgba(37, 99, 235, 0.45);
-    }
-
-    .brand-text h1 {
-      font-size: 1.25rem;
+    .brand h1 {
+      font-size: 1.35rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .brand-text h1 span {
-      background: linear-gradient(90deg, #60a5fa, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand-text p {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 500;
     }
 
     .header-actions {
@@ -177,17 +148,6 @@
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
       border-color: #3b82f6;
-    }
-
-    .btn-danger-outline {
-      background: rgba(244, 63, 94, 0.08);
-      border-color: rgba(244, 63, 94, 0.25);
-      color: #fb7185;
-    }
-    .btn-danger-outline:hover {
-      background: rgba(244, 63, 94, 0.16);
-      border-color: var(--accent-rose);
-      color: #fff;
     }
 
     /* Filter & Search Bar */
@@ -402,13 +362,13 @@
       border: 1px solid rgba(148, 163, 184, 0.2);
     }
 
-    .badge-owner-a {
+    .badge-owner-martin {
       background: rgba(59, 130, 246, 0.18);
       color: #60a5fa;
       border: 1px solid rgba(59, 130, 246, 0.35);
     }
 
-    .badge-owner-b {
+    .badge-owner-yordan {
       background: rgba(16, 185, 129, 0.18);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.35);
@@ -679,13 +639,7 @@
   <header>
     <div class="header-container">
       <div class="brand">
-        <div class="brand-icon">
-          <i class="fa-solid fa-anchor"></i>
-        </div>
-        <div class="brand-text">
-          <h1>Port Logistics <span>AI SaaS</span></h1>
-          <p>Варна & Бургас • Project Roadmap & Execution Board (EUR)</p>
-        </div>
+        <h1>Задачи</h1>
       </div>
 
       <div class="header-actions">
@@ -699,9 +653,6 @@
           <i class="fa-solid fa-file-import"></i> Импорт JSON
           <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importKanbanJson(event)">
         </label>
-        <button class="btn btn-danger-outline" onclick="resetToRoadmapPrompt()">
-          <i class="fa-solid fa-rotate-left"></i> Нулирай
-        </button>
       </div>
     </div>
   </header>
@@ -717,9 +668,9 @@
       <div class="filters-group">
         <span class="filter-label"><i class="fa-solid fa-user-group"></i> Отговорник:</span>
         <button class="filter-pill active" data-owner="ALL" onclick="setOwnerFilter('ALL')">Всички</button>
-        <button class="filter-pill" data-owner="A" onclick="setOwnerFilter('A')">Партньор А (CTO)</button>
-        <button class="filter-pill" data-owner="B" onclick="setOwnerFilter('B')">Партньор Б (CEO)</button>
-        <button class="filter-pill" data-owner="BOTH" onclick="setOwnerFilter('BOTH')">Заедно (BOTH)</button>
+        <button class="filter-pill" data-owner="BC" onclick="setOwnerFilter('BC')">Йордан</button>
+        <button class="filter-pill" data-owner="TC" onclick="setOwnerFilter('TC')">Мартин</button>
+        <button class="filter-pill" data-owner="BOTH" onclick="setOwnerFilter('BOTH')">Both</button>
       </div>
     </div>
   </div>
@@ -802,9 +753,9 @@
             <div class="form-group">
               <label for="taskOwnerInput">Отговорник *</label>
               <select id="taskOwnerInput" class="form-control" required>
-                <option value="A">Партньор А (CTO / Вътрешен архитект)</option>
-                <option value="B">Партньор Б (CEO / Solutions Architect)</option>
-                <option value="BOTH">Заедно (BOTH)</option>
+                <option value="BC">Йордан (Business / Solutions Architect)</option>
+                <option value="TC">Мартин (Tech / AI Architect)</option>
+                <option value="BOTH">Both (Заедно)</option>
               </select>
             </div>
 
@@ -838,14 +789,14 @@
 
   <script>
     // Storage Key
-    const STORAGE_KEY = 'portLogisticsKanban_v1';
+    const STORAGE_KEY = 'portLogisticsKanban_v2';
 
-    // Initial Seed Data (From Master Document)
+    // Initial Seed Data (15 tasks mapped to Йордан (BC), Мартин (TC), Both)
     const SEED_DATA = [
       {
         id: "task-1",
         title: "Официално разпределяне на ролите",
-        description: "Среща между съоснователите и фиксиране на Партньор А (CTO / Вътрешен архитект) и Партньор Б (CEO / Solutions Architect).",
+        description: "Среща между съоснователите и фиксиране на Мартин (TC / Вътрешен архитект) и Йордан (BC / Solutions Architect).",
         owner: "BOTH",
         stage: "Седмица 1",
         status: "todo",
@@ -873,7 +824,7 @@
         id: "task-4",
         title: "Контакт с 5-10 спедиторски фирми във Варна",
         description: "Customer Discovery интервюта за откриване на най-бавния документооборот.",
-        owner: "B",
+        owner: "BC",
         stage: "Месец 1",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -882,7 +833,7 @@
         id: "task-5",
         title: "Събиране на анонимизирани бланки",
         description: "Набавяне на реални коносаменти (Bills of Lading), товарителници и митнически декларации със заличени данни.",
-        owner: "B",
+        owner: "BC",
         stage: "Месец 1",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -891,7 +842,7 @@
         id: "task-6",
         title: "Бенчмарк на OCR/LLM модели и ERP анализ",
         description: "Тестване на точност и цена на страница (в EUR) за JSON извличане и проучване на локалните ERP формати.",
-        owner: "A",
+        owner: "TC",
         stage: "Месец 1",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -909,7 +860,7 @@
         id: "task-8",
         title: "PoC AI пайплайн (PDF/Скан -> JSON)",
         description: "Работещ бекенд скрипт за извличане и логическа валидация на тегла и контейнери.",
-        owner: "A",
+        owner: "TC",
         stage: "Месец 2",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -918,7 +869,7 @@
         id: "task-9",
         title: "Интерактивен прототип (Figma / Базов UI)",
         description: "Визуално демо на Dashboard интерфейса за презентации пред клиенти и инкубатори.",
-        owner: "B",
+        owner: "BC",
         stage: "Месец 2",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -927,7 +878,7 @@
         id: "task-10",
         title: "Pitch Deck и кандидатстване в РАПИВ / Бизнес инкубатор – Варна",
         description: "Подготовка на презентация, финансови прогнози в EUR и подаване на документи за Seed финансиране.",
-        owner: "B",
+        owner: "BC",
         stage: "Месец 2",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -936,7 +887,7 @@
         id: "task-11",
         title: "Облачна инфраструктура, БД и AI агенти за валидация",
         description: "Изграждане на сървърната част, логове в реално време и автоматично засичане на несъответствия.",
-        owner: "A",
+        owner: "TC",
         stage: "Месеци 3–4",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -945,7 +896,7 @@
         id: "task-12",
         title: "Уеб Dashboard, автентикация и Excel/CSV/API експорт",
         description: "Разработка на клиентския портал за качване, преглед, одобрение и експорт към ERP.",
-        owner: "B",
+        owner: "BC",
         stage: "Месеци 3–4",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -963,7 +914,7 @@
         id: "task-14",
         title: "Multi-tenant архитектура и GDPR сигурност",
         description: "Криптиране на данните и подготовка на системата за мащабиране към множество клиенти.",
-        owner: "A",
+        owner: "TC",
         stage: "Месеци 5–6",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -972,7 +923,7 @@
         id: "task-15",
         title: "Case Study и B2B продажби на v1.0 (Варна и Бургас)",
         description: "Пакетиране на резултатите от бета теста и затваряне на първите платени абонаменти.",
-        owner: "B",
+        owner: "BC",
         stage: "Месеци 5–6",
         status: "backlog",
         createdAt: "2026-10-28"
@@ -985,12 +936,24 @@
     let searchQuery = '';
     let draggedTaskId = null;
 
+    // Helper: Normalize owners from older storage format if present
+    function normalizeOwner(owner) {
+      if (owner === 'A') return 'TC';
+      if (owner === 'B') return 'BC';
+      return owner;
+    }
+
     // Initialize
     function init() {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('portLogisticsKanban_v1');
       if (stored) {
         try {
-          tasks = JSON.parse(stored);
+          const parsed = JSON.parse(stored);
+          tasks = parsed.map(t => ({
+            ...t,
+            owner: normalizeOwner(t.owner)
+          }));
+          saveTasks();
         } catch (e) {
           console.error("Грешка при четене на localStorage, зареждане на SEED", e);
           tasks = [...SEED_DATA];
@@ -1017,7 +980,8 @@
 
         const filtered = tasks.filter(t => {
           if (t.status !== status) return false;
-          if (currentOwnerFilter !== 'ALL' && t.owner !== currentOwnerFilter) return false;
+          const owner = normalizeOwner(t.owner);
+          if (currentOwnerFilter !== 'ALL' && owner !== currentOwnerFilter) return false;
           if (searchQuery) {
             const q = searchQuery.toLowerCase();
             const matchTitle = t.title.toLowerCase().includes(q);
@@ -1047,14 +1011,16 @@
       card.id = `card-${task.id}`;
       card.dataset.id = task.id;
 
+      const owner = normalizeOwner(task.owner);
       let ownerBadgeClass = 'badge-owner-both';
-      let ownerLabel = 'BOTH';
-      if (task.owner === 'A') {
-        ownerBadgeClass = 'badge-owner-a';
-        ownerLabel = 'Партньор А';
-      } else if (task.owner === 'B') {
-        ownerBadgeClass = 'badge-owner-b';
-        ownerLabel = 'Партньор Б';
+      let ownerLabel = 'Both';
+
+      if (owner === 'TC') {
+        ownerBadgeClass = 'badge-owner-martin';
+        ownerLabel = 'Мартин';
+      } else if (owner === 'BC') {
+        ownerBadgeClass = 'badge-owner-yordan';
+        ownerLabel = 'Йордан';
       }
 
       card.innerHTML = `
@@ -1226,7 +1192,7 @@
       document.getElementById('taskId').value = task.id;
       document.getElementById('taskTitleInput').value = task.title;
       document.getElementById('taskDescInput').value = task.description || '';
-      document.getElementById('taskOwnerInput').value = task.owner;
+      document.getElementById('taskOwnerInput').value = normalizeOwner(task.owner);
       document.getElementById('taskStatusInput').value = task.status;
       document.getElementById('taskStageInput').value = task.stage || '';
 
@@ -1265,7 +1231,10 @@
         try {
           const parsed = JSON.parse(e.target.result);
           if (Array.isArray(parsed)) {
-            tasks = parsed;
+            tasks = parsed.map(t => ({
+              ...t,
+              owner: normalizeOwner(t.owner)
+            }));
             saveTasks();
             renderBoard();
             showToast(`Успешно импортирани ${parsed.length} задачи!`);
@@ -1278,15 +1247,6 @@
         event.target.value = '';
       };
       reader.readAsText(file);
-    }
-
-    function resetToRoadmapPrompt() {
-      if (confirm("Сигурни ли сте, че искате да нулирате борда до началните 15 задачи от официалния Master Document?")) {
-        tasks = [...SEED_DATA];
-        saveTasks();
-        renderBoard();
-        showToast('Бордът е нулиран към началната пътна карта!');
-      }
     }
 
     // Helper: Toast
