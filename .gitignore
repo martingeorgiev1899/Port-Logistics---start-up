@@ -1,0 +1,20 @@
+# Operating System & Drive Metadata
+desktop.ini
+Desktop.ini
+[Dd]esktop.ini
+.DS_Store
+Thumbs.db
+
+# Google Drive shortcut / pointer files
+*.gdoc
+*.gsheet
+*.gslides
+*.gform
+*.gdraw
+
+# Temporary / Scratch files
+*.tmp
+*.log
+~*
+*.swp
+*.bak
