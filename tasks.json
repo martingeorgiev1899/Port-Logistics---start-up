@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T21:38:37.142Z",
+  "updatedAt": "2026-11-23T21:38:39.048Z",
   "tasks": [
     {
       "id": "t-mwtsfgtap5yg",
       "title": "tashaci",
       "description": "",
       "owner": "martin",
-      "status": "doing",
+      "status": "week",
       "stage": "",
       "order": 1,
       "createdAt": "2026-11-23",
